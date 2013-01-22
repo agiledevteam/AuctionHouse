@@ -11,7 +11,7 @@ public class ApplicationRunner {
 			@Override
 			public void run() {
 				try {
-					Main.main("danielkang-01", "5222", "item-54321", "auction");
+					Main.main("localhost", "5222", "item-54321", "auction");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
