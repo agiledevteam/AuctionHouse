@@ -18,12 +18,12 @@ public class FakeBidder implements MessageListener {
 	private BlockingQueue<Message> messages = new LinkedBlockingQueue<Message>();
 
 	public void join() throws Exception {
-		ConnectionConfiguration config = new ConnectionConfiguration("danielkang-01", 5222);
+		ConnectionConfiguration config = new ConnectionConfiguration("localhost", 5222);
 		XMPPConnection connection = new XMPPConnection(config);
 		connection.connect();
 		connection.login("bidder-1", "bidder");
 		
-		chat = connection.getChatManager().createChat("auction-item-54321@danielkang-01", this);
+		chat = connection.getChatManager().createChat("auction-item-54321@localhost", this);
 		chat.sendMessage("");
 	}
 

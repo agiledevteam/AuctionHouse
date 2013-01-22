@@ -24,10 +24,10 @@ public class Main implements MessageListener, UserActionListener {
 			}
 		});
 		
-		ConnectionConfiguration config = new ConnectionConfiguration("danielkang-01", 5222);
+		ConnectionConfiguration config = new ConnectionConfiguration("localhost", 5222);
 		XMPPConnection connection = new XMPPConnection(config);
 		connection.connect();
-		connection.login("auction-item-54321", "auction");
+		connection.login("auction-item-54321@localhost", "auction");
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
