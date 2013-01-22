@@ -1,5 +1,8 @@
 package auctionhouse;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.SwingUtilities;
 
 import org.jivesoftware.smack.Chat;
@@ -10,13 +13,17 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-public class Main implements MessageListener, UserActionListener {
-
+public class Main implements UserActionListener {
+	public static final String JOIN_COMMAND_FORMAT  = "SOLVersion: 1.1; Command: JOIN;";
+	public static final String BID_COMMAND_FORMAT   = "SOLVersion: 1.1; Command: BID; Price: %d;";
+	public static final String CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
+	
 	private MainWindow ui;
 
 	protected Chat chat;
 
 	public Main() throws Exception {
+		
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
@@ -32,9 +39,11 @@ public class Main implements MessageListener, UserActionListener {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
 				Main.this.chat = chat;
-				chat.addMessageListener(Main.this);
+				chat.addMessageListener(new AuctionCommandTranslator("item-54321", ui));
 			}
 		});
+
+		this.disconnectWhenUICloses(connection);
 	}
 
 	public static void main(String... args) throws Exception {
@@ -42,15 +51,18 @@ public class Main implements MessageListener, UserActionListener {
 
 	}
 
-	@Override
-	public void processMessage(Chat chat, Message message) {
-		ui.setStatus("Joined");
+	private void disconnectWhenUICloses(final XMPPConnection connection) {
+		ui.addWindowListener(new WindowAdapter() {
+		    public void windowClosed(WindowEvent e) {
+		    	connection.disconnect();
+		    }
+		});
 	}
-
+	
 	@Override
 	public void closeAuction() {
 		try {
-			chat.sendMessage("");
+			chat.sendMessage(CLOSE_EVENT_FORMAT);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}

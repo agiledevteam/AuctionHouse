@@ -16,7 +16,7 @@ public class ApplicationRunner {
 					e.printStackTrace();
 				}
 			}
-			
+
 		});
 		thread.setDaemon(true);
 		thread.start();
@@ -33,6 +33,17 @@ public class ApplicationRunner {
 
 	public void closeAuction() {
 		driver.clickCloseButton();
+	}
+
+	public void receivedBidMessage() {
+		driver.showsStatus("Bidded");
+	}
+	
+
+	public void stop() {
+		if (driver != null) {
+			driver.dispose();
+		}
 	}
 
 }
