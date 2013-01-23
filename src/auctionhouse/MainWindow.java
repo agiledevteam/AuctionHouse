@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class MainWindow extends JFrame implements AuctionCommandHandler {
+public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
 	private final JLabel auctionStatus = statusLabel();

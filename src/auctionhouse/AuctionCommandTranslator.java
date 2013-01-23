@@ -23,19 +23,11 @@ public class AuctionCommandTranslator implements MessageListener {
 		String commandType = event.get("Command");
 
 		if ("JOIN".equals(commandType)) {
-			try {
-				chat.sendMessage(String
-						.format("SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s",
-								1000, 50, ""));
-			} catch (XMPPException e) {
-				e.printStackTrace();
-			}
-			handler.setStatus("Joined");
+			handler.onJoin();
 		}
 		else if ("BID".equals(commandType)) {
-			handler.setStatus("Bidding");
+			handler.onBid();
 		}
-
 	}
 
 	private HashMap<String, String> unpackEventFrom(Message message) {

@@ -14,9 +14,10 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
 public class Main implements UserActionListener {
-	public static final String JOIN_COMMAND_FORMAT  = "SOLVersion: 1.1; Command: JOIN;";
-	public static final String BID_COMMAND_FORMAT   = "SOLVersion: 1.1; Command: BID; Price: %d;";
-	public static final String CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
+	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
+	public static final String BID_COMMAND_FORMAT  = "SOLVersion: 1.1; Command: BID; Price: %d;";
+	public static final String PRICE_EVENT_FORMAT  = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
+	public static final String CLOSE_EVENT_FORMAT  = "SOLVersion: 1.1; Event: CLOSE;";
 	
 	private MainWindow ui;
 
@@ -39,7 +40,9 @@ public class Main implements UserActionListener {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
 				Main.this.chat = chat;
-				chat.addMessageListener(new AuctionCommandTranslator("item-54321", ui));
+				XMPPAuction auction = new XMPPAuction(chat);
+				chat.addMessageListener(new AuctionCommandTranslator("item-54321",
+						new AuctionBroker(auction, ui)));
 			}
 		});
 
