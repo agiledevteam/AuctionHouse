@@ -1,7 +1,5 @@
 package endtoend;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Test;
 
@@ -15,39 +13,26 @@ public class AuctionHouseEndtoEndTest {
 		app.startAuction();
 		app.showsStarted();
 		bidder.join();
+		bidder.receivedPriceMessage(1000, 50, "Broker");
 		app.showBidderJoined();
 		app.closeAuction();
 		bidder.receivedClosedMessage();
 	}
 	
 	@Test
-	public void clientJoinedAndBidButClosed() throws Exception {
+	public void clientJoinedAndBidAndClosed() throws Exception {
 		app.startAuction();
 		app.showsStarted();
 		bidder.join();
+		bidder.receivedPriceMessage(1000, 50, "Broker");
 		app.showBidderJoined();	// actual "JOIN" command received and send current price
-		bidder.receivedPriceMessage();
 		bidder.bid();
+		bidder.receivedPriceMessage(1050, 50, "sniper");
 		app.showBidderBidding();
 		app.closeAuction();
 		bidder.receivedClosedMessage();
 	}
 
-	@Test
-	public void clientJoinedAndBidHigherAndWon() throws Exception {
-		app.startAuction();
-		app.showsStarted();
-		bidder.join();
-		app.showBidderJoined();
-		bidder.receivedPriceMessage();
-		bidder.bid();
-		app.showBidderBidding();
-		bidder.receivedPriceMessage();
-		app.closeAuction();
-		bidder.receivedClosedMessage();
-	}
-	
-	@After
 	public void stopAuction() {
 		bidder.stop();
 	}

@@ -2,6 +2,8 @@ package endtoend;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,34 +19,40 @@ import org.jivesoftware.smack.packet.Message;
 import auctionhouse.Main;
 
 public class FakeBidder implements MessageListener {
-	
+
 	private Chat chat;
 	private BlockingQueue<Message> messages = new LinkedBlockingQueue<Message>();
 	private XMPPConnection connection;
-	
+
 	public void join() throws Exception {
-		ConnectionConfiguration config = new ConnectionConfiguration("localhost", 5222);
+		ConnectionConfiguration config = new ConnectionConfiguration(
+				"localhost", 5222);
 		connection = new XMPPConnection(config);
 		connection.connect();
-		connection.login("bidder-1", "bidder");
-		
-		chat = connection.getChatManager().createChat("auction-item-54321@localhost", this);
+		connection.login("sniper", "sniper");
+
+		chat = connection.getChatManager().createChat(
+				"auction-item-54321@localhost", this);
 		chat.sendMessage(Main.JOIN_COMMAND_FORMAT);
 	}
 
 	public void receivedClosedMessage() throws InterruptedException {
 		Message message = messages.poll(5, TimeUnit.SECONDS);
 		assertNotNull(message);
+		assertThat(message.getBody(), containsString("CLOSE"));
+	}
+
+	public void receivedPriceMessage(int price, int increment, String bidderId)
+			throws InterruptedException {
+		Message message = messages.poll(5, TimeUnit.SECONDS);
+		assertNotNull(message);
+		assertThat(message.getBody(),
+				allOf(containsString("PRICE"), containsString(bidderId)));
 	}
 
 	@Override
 	public void processMessage(Chat chat, Message message) {
 		messages.add(message);
-	}
-
-	public void receivedPriceMessage() throws InterruptedException {
-		Message message = messages.poll(5, TimeUnit.SECONDS);
-		assertNotNull(message);
 	}
 
 	public void bid() throws XMPPException {

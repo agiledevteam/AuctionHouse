@@ -23,11 +23,15 @@ public class AuctionCommandTranslator implements MessageListener {
 		String commandType = event.get("Command");
 
 		if ("JOIN".equals(commandType)) {
-			handler.onJoin();
+			handler.onJoin(bidder(chat));
 		}
 		else if ("BID".equals(commandType)) {
-			handler.onBid();
+			handler.onBid(bidder(chat), Integer.parseInt(event.get("Price")));
 		}
+	}
+
+	private String bidder(Chat chat) {
+		return chat.getParticipant().split("@")[0];
 	}
 
 	private HashMap<String, String> unpackEventFrom(Message message) {
