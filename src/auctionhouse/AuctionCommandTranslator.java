@@ -10,11 +10,11 @@ import org.jivesoftware.smack.packet.Message;
 public class AuctionCommandTranslator implements MessageListener {
 
 	String itemId;
-	AuctionCommandListener listener;
+	AuctionCommandHandler handler;
 
-	public AuctionCommandTranslator(String itemId, AuctionCommandListener listener) {
+	public AuctionCommandTranslator(String itemId, AuctionCommandHandler handler) {
 		this.itemId = itemId;
-		this.listener = listener;
+		this.handler = handler;
 	}
 
 	@Override
@@ -30,10 +30,10 @@ public class AuctionCommandTranslator implements MessageListener {
 			} catch (XMPPException e) {
 				e.printStackTrace();
 			}
-			listener.setStatus("Joined");
+			handler.setStatus("Joined");
 		}
 		else if ("BID".equals(commandType)) {
-			listener.setStatus("Bidded");
+			handler.setStatus("Bidding");
 		}
 
 	}

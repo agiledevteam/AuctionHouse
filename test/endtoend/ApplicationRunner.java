@@ -27,7 +27,7 @@ public class ApplicationRunner {
 		driver.showsStatus("Started");
 	}
 
-	public void receivedJoinMessage() {
+	public void showBidderJoined() { 
 		driver.showsStatus("Joined");
 	}
 
@@ -35,10 +35,9 @@ public class ApplicationRunner {
 		driver.clickCloseButton();
 	}
 
-	public void receivedBidMessage() {
-		driver.showsStatus("Bidded");
+	public void showBidderBidding() {
+		driver.showsStatus("Bidding");
 	}
-	
 
 	public void stop() {
 		if (driver != null) {

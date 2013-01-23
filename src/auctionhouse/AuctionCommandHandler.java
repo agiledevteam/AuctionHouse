@@ -1,6 +1,6 @@
 package auctionhouse;
 
-public interface AuctionCommandListener {
+public interface AuctionCommandHandler {
 
 	void setStatus(String status);
 

@@ -15,7 +15,7 @@ public class AuctionHouseEndtoEndTest {
 		app.startAuction();
 		app.showsStarted();
 		bidder.join();
-		app.receivedJoinMessage();
+		app.showBidderJoined();
 		app.closeAuction();
 		bidder.receivedClosedMessage();
 	}
@@ -25,10 +25,10 @@ public class AuctionHouseEndtoEndTest {
 		app.startAuction();
 		app.showsStarted();
 		bidder.join();
-		app.receivedJoinMessage();	// actual "JOIN" command received and send current price
+		app.showBidderJoined();	// actual "JOIN" command received and send current price
 		bidder.receivedPriceMessage();
 		bidder.bid();
-		app.receivedBidMessage();
+		app.showBidderBidding();
 		app.closeAuction();
 		bidder.receivedClosedMessage();
 	}
