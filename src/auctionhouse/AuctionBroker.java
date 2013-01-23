@@ -15,13 +15,13 @@ public class AuctionBroker implements AuctionCommandHandler {
 	@Override
 	public void onJoin() {
 		auction.sendPrice(1000, 50, "");
-		listener.setStatus("Joined");
+		listener.setStatus("Joined", 1000, "");
 	}
 
 	@Override
 	public void onBid() {
 		auction.sendPrice(1000, 50, "");
-		listener.setStatus("Bidding");
+		listener.setStatus("Bidding", 1000, "");
 	}
 
 }

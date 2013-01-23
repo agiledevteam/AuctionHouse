@@ -33,6 +33,20 @@ public class AuctionHouseEndtoEndTest {
 		bidder.receivedClosedMessage();
 	}
 
+	@Test
+	public void clientJoinedAndBidHigherAndWon() throws Exception {
+		app.startAuction();
+		app.showsStarted();
+		bidder.join();
+		app.showBidderJoined();
+		bidder.receivedPriceMessage();
+		bidder.bid();
+		app.showBidderBidding();
+		bidder.receivedPriceMessage();
+		app.closeAuction();
+		bidder.receivedClosedMessage();
+	}
+	
 	@After
 	public void stopAuction() {
 		bidder.stop();
