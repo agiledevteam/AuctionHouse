@@ -14,7 +14,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-public class Main implements UserActionListener, AuctionBrokerManager {
+public class Main implements UserActionListener, AuctionBroker {
 	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 	public static final String PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
@@ -22,8 +22,13 @@ public class Main implements UserActionListener, AuctionBrokerManager {
 
 	private MainWindow ui;
 
-	protected ArrayList<Chat> chatList = new ArrayList<Chat>();
+	protected ArrayList<AuctionCommandHandler> brokerList = new ArrayList<AuctionCommandHandler>();
+	private String winner = "Broker";
+	private int currentPrice = 1000;
+	private int increment = 50;
+	
 
+	
 	public Main() throws Exception {
 
 		SwingUtilities.invokeAndWait(new Runnable() {
@@ -41,10 +46,11 @@ public class Main implements UserActionListener, AuctionBrokerManager {
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
-				Main.this.chatList.add(chat);
 				XMPPAuction auction = new XMPPAuction(chat);
+				AuctionBidderHandler broker = new AuctionBidderHandler(auction, ui, Main.this);
+				Main.this.brokerList.add(broker);
 				chat.addMessageListener(new AuctionCommandTranslator(
-						"item-54321", new AuctionBroker(auction, ui, Main.this)));
+						"item-54321", broker));
 			}
 		});
 
@@ -65,19 +71,38 @@ public class Main implements UserActionListener, AuctionBrokerManager {
 
 	@Override
 	public void closeAuction() {
-		try {
-			for (Chat chat : chatList) {
-				chat.sendMessage(CLOSE_EVENT_FORMAT);
-			}
-		} catch (XMPPException e) {
-			e.printStackTrace();
+		for (AuctionCommandHandler broker : brokerList) {
+			broker.sendClose();
 		}
 	}
 
 	@Override
-	public void broadcastPrice(int currentPrice, int increment, String winner) {
-		// TODO Auto-generated method stub
+	public int getPrice() {
+		return currentPrice;
+	}
+
+	@Override
+	public String getWinner() {
+		return winner;
+	}
+
+	@Override
+	public int getIncrement() {
+		return increment;
+	}
+
+	@Override
+	public void updateBid(int price, String bidderId) {
+		this.currentPrice = price;
+		this.winner = bidderId;
 		
+		notifyPrice();
+	}
+
+	private void notifyPrice() {
+		for (AuctionCommandHandler broker : brokerList) {
+			broker.sendPrice(currentPrice, increment, winner);
+		}
 	}
 
 }

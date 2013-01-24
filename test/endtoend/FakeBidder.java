@@ -60,8 +60,8 @@ public class FakeBidder implements MessageListener {
 		messages.add(message);
 	}
 
-	public void bid() throws XMPPException {
-		chat.sendMessage(String.format(Main.BID_COMMAND_FORMAT, 1050));
+	public void bid(int price) throws XMPPException {
+		chat.sendMessage(String.format(Main.BID_COMMAND_FORMAT, price));
 	}
 
 	public void stop() {

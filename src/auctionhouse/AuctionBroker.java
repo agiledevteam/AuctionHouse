@@ -1,34 +1,13 @@
 package auctionhouse;
 
+public interface AuctionBroker {
 
-public class AuctionBroker implements AuctionCommandHandler {
+	int getPrice();
 
-	Auction auction;
-	BrokerListener listener;
-	private String winner = "Broker";
-	private int currentPrice = 1000;
-	private int increment = 50;
-	private AuctionBrokerManager manager;
+	String getWinner();
 
-	public AuctionBroker(Auction auction, BrokerListener listener, AuctionBrokerManager manager) {
-		this.auction = auction;
-		this.listener = listener;
-		this.manager = manager;
-	}
-		
-	@Override
-	public void onJoin(String bidderId) {
-		auction.sendPrice(currentPrice, increment, winner);
-		listener.setStatus("Joined", currentPrice, bidderId);
-	}
+	int getIncrement();
 
-	@Override
-	public void onBid(String bidderId, int price) {
-		currentPrice = price;
-		winner = bidderId;
-		auction.sendPrice(currentPrice, increment, bidderId);
-		manager.broadcastPrice(currentPrice, increment, winner);
-		listener.setStatus("Bidding", currentPrice, bidderId);
-	}
+	void updateBid(int price, String bidderId);
 
 }
