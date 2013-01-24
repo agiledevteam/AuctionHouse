@@ -24,6 +24,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String CLOSE_BUTTON = "CloseButton";
 	public static final String AUCTION_STATUS = "AuctionStatus";
 	public static final String AUCTION_HOUSE = "AuctionHouse";
+	public static final String AUCTION_LOG = "AuctionLog";
 
 	public MainWindow(final UserActionListener listener) {
 		super("Auction House");
@@ -68,7 +69,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private JTextArea logJTextArea() {
 		JTextArea textArea = new JTextArea(10, 20);
-		textArea.setName("AuctionLog");
+		textArea.setName(MainWindow.AUCTION_LOG);
 		textArea.setText("-------\n");
 		return textArea;
 	}

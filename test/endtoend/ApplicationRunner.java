@@ -27,7 +27,8 @@ public class ApplicationRunner {
 		driver.showsStatus("Started");
 	}
 
-	public void showBidderJoined() { 
+	public void showBidderJoined(String bidderId) {
+		driver.showsBidderId(bidderId);
 		driver.showsStatus("Joined");
 	}
 
