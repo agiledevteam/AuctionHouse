@@ -14,7 +14,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-public class Main implements UserActionListener {
+public class Main implements UserActionListener, AuctionBrokerManager {
 	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 	public static final String PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
@@ -44,7 +44,7 @@ public class Main implements UserActionListener {
 				Main.this.chatList.add(chat);
 				XMPPAuction auction = new XMPPAuction(chat);
 				chat.addMessageListener(new AuctionCommandTranslator(
-						"item-54321", new AuctionBroker(auction, ui)));
+						"item-54321", new AuctionBroker(auction, ui, Main.this)));
 			}
 		});
 
@@ -72,6 +72,12 @@ public class Main implements UserActionListener {
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void broadcastPrice(int currentPrice, int increment, String winner) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
