@@ -1,13 +1,13 @@
 package auctionhouse;
 
 
-public class AuctionBidderHandler implements AuctionCommandHandler {
+public class AuctionBidderCount implements AuctionCommandHandler {
 
 	Auction auction;
 	BrokerListener listener;
-	private AuctionBroker broker;
+	private BidderObserver broker;
 
-	public AuctionBidderHandler(Auction auction, BrokerListener listener, AuctionBroker broker) {
+	public AuctionBidderCount(Auction auction, BrokerListener listener, BidderObserver broker) {
 		this.auction = auction;
 		this.listener = listener;
 		this.broker = broker;
