@@ -38,7 +38,8 @@ public class ApplicationDriver extends JFrameDriver {
 		return new JButtonDriver(this, JButton.class, named(MainWindow.CLOSE_BUTTON));
 	}
 
-	public void showsBidderId(String bidderId) {
-		new JTextComponentDriver(this, JTextArea.class ,named(MainWindow.AUCTION_LOG)).hasText(containsString(bidderId));
+	public void showsBidderLog(String bidderId, String status, int price) {
+		new JTextComponentDriver(this, JTextArea.class ,named(MainWindow.AUCTION_LOG))
+		.hasText(containsString(String.format(MainWindow.AUCTION_LOG_FORMAT, bidderId, status, price)));
 	}
 }

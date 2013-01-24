@@ -15,7 +15,7 @@ public class AuctionHouseEndtoEndTest {
 		app.showsStarted();
 		bidder1.join();
 		bidder1.receivedPriceMessage(1000, 50, "Broker");
-		app.showBidderJoined(bidder1.getId());
+		app.showBidderJoined(bidder1.getId(), 1000);
 		app.closeAuction();
 		bidder1.receivedClosedMessage();
 	}
@@ -26,10 +26,10 @@ public class AuctionHouseEndtoEndTest {
 		app.showsStarted();
 		bidder1.join();
 		bidder1.receivedPriceMessage(1000, 50, "Broker");
-		app.showBidderJoined(bidder1.getId());	// actual "JOIN" command received and send current price
+		app.showBidderJoined(bidder1.getId(), 1000);	// actual "JOIN" command received and send current price
 		bidder1.bid();
 		bidder1.receivedPriceMessage(1050, 50, bidder1.getId());
-		app.showBidderBidding();
+		app.showBidderBidding(bidder1.getId(), 1050);
 		app.closeAuction();
 		bidder1.receivedClosedMessage();
 	}
@@ -40,10 +40,41 @@ public class AuctionHouseEndtoEndTest {
 		app.showsStarted();
 		bidder1.join();
 		bidder1.receivedPriceMessage(1000, 50, "Broker");
-		app.showBidderJoined(bidder1.getId());
+		app.showBidderJoined(bidder1.getId(), 1000);
 		bidder2.join();
 		bidder2.receivedPriceMessage(1000, 50, "Broker");
-		app.showBidderJoined(bidder2.getId());
+		app.showBidderJoined(bidder2.getId(), 1000);
+		app.closeAuction();
+		bidder1.receivedClosedMessage();
+		bidder2.receivedClosedMessage();
+	}
+	
+	@Test
+	public void multiClientJoinAndBidAndClosed() throws Exception {
+		app.startAuction();
+		app.showsStarted();
+		bidder1.join();
+		bidder1.receivedPriceMessage(1000, 50, "Broker");
+		app.showBidderJoined(bidder1.getId(), 1000);
+		bidder2.join();
+		bidder2.receivedPriceMessage(1000, 50, "Broker");
+		app.showBidderJoined(bidder2.getId(), 1000);
+		
+		bidder1.bid();
+		bidder1.receivedPriceMessage(1050, 50, bidder1.getId());
+		bidder2.receivedPriceMessage(1050, 50, bidder1.getId());
+		app.showBidderBidding(bidder1.getId(), 1050);
+		
+		bidder2.bid();
+		bidder2.receivedPriceMessage(1100, 50, bidder2.getId());
+		bidder1.receivedPriceMessage(1100, 50, bidder2.getId());
+		app.showBidderBidding(bidder2.getId(), 1100);
+		
+		bidder1.bid();
+		bidder1.receivedPriceMessage(1150, 50, bidder1.getId());
+		bidder2.receivedPriceMessage(1150, 50, bidder1.getId());
+		app.showBidderBidding(bidder1.getId(), 1150);
+		
 		app.closeAuction();
 		bidder1.receivedClosedMessage();
 		bidder2.receivedClosedMessage();
@@ -53,6 +84,7 @@ public class AuctionHouseEndtoEndTest {
 	public void stopAuction() {
 		bidder1.stop();
 	}
+	
 	
 	@After
 	public void stopApplication() {

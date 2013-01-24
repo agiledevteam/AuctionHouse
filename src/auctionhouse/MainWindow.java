@@ -26,6 +26,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String AUCTION_HOUSE = "AuctionHouse";
 	public static final String AUCTION_LOG = "AuctionLog";
 
+	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
+	
 	public MainWindow(final UserActionListener listener) {
 		super("Auction House");
 		setName(MainWindow.AUCTION_HOUSE);
@@ -76,6 +78,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	public void setStatus(String statusText, int lastPrice ,String bidder) {
 		auctionStatus.setText(statusText);
-		logArea.append(String.format("%s is %s at %d\n", bidder, statusText, lastPrice));
+		logArea.append(String.format(AUCTION_LOG_FORMAT, bidder, statusText, lastPrice));
 	}
 }

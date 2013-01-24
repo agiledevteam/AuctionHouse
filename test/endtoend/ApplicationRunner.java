@@ -27,8 +27,8 @@ public class ApplicationRunner {
 		driver.showsStatus("Started");
 	}
 
-	public void showBidderJoined(String bidderId) {
-		driver.showsBidderId(bidderId);
+	public void showBidderJoined(String bidderId, int price) {
+		driver.showsBidderLog(bidderId, "Joined", price);
 		driver.showsStatus("Joined");
 	}
 
@@ -36,7 +36,8 @@ public class ApplicationRunner {
 		driver.clickCloseButton();
 	}
 
-	public void showBidderBidding() {
+	public void showBidderBidding(String bidderId, int price) {
+		driver.showsBidderLog(bidderId, "Bidding", price);
 		driver.showsStatus("Bidding");
 	}
 
