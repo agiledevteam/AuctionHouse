@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
 public class AuctionCommandTranslator implements MessageListener {
@@ -24,8 +23,7 @@ public class AuctionCommandTranslator implements MessageListener {
 
 		if ("JOIN".equals(commandType)) {
 			handler.onJoin(bidder(chat));
-		}
-		else if ("BID".equals(commandType)) {
+		} else if ("BID".equals(commandType)) {
 			handler.onBid(bidder(chat), Integer.parseInt(event.get("Price")));
 		}
 	}

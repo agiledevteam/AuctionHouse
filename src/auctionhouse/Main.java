@@ -2,17 +2,13 @@ package auctionhouse;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 
 public class Main implements UserActionListener {
 	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
@@ -21,10 +17,8 @@ public class Main implements UserActionListener {
 	public static final String CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
 
 	private MainWindow ui;
-	
-	BidderObserver broker = new AuctionBroker();
-	
-	
+	private BidderObserver broker = new AuctionBroker();
+
 	public Main() throws Exception {
 
 		SwingUtilities.invokeAndWait(new Runnable() {
@@ -43,11 +37,12 @@ public class Main implements UserActionListener {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
 				XMPPAuction auction = new XMPPAuction(chat);
-				AuctionBidderCount bidCounter = new AuctionBidderCount(auction, ui, broker);
-				
-				broker.add(bidCounter);
+				AuctionBidderChannel channel = new AuctionBidderChannel(
+						auction, ui, broker);
+
+				broker.add(channel);
 				chat.addMessageListener(new AuctionCommandTranslator(
-						"item-54321", bidCounter));
+						"item-54321", channel));
 			}
 		});
 

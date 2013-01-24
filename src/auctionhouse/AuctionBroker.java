@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AuctionBroker implements BidderObserver {
 	
-	protected ArrayList<AuctionCommandHandler> brokerList = new ArrayList<AuctionCommandHandler>();
+	protected ArrayList<AuctionBidderChannel> channelList = new ArrayList<AuctionBidderChannel>();
 	
 	private String winner = "Broker";
 	private int currentPrice = 1000;
@@ -34,20 +34,20 @@ public class AuctionBroker implements BidderObserver {
 	}
 	
 	@Override
-	public void add(AuctionBidderCount bidCounter) {
-		this.brokerList.add(bidCounter);
+	public void add(AuctionBidderChannel channel) {
+		this.channelList.add(channel);
 	}
 	
 	@Override
 	public void notifyClose() {
-		for (AuctionCommandHandler broker : brokerList) {
-			broker.sendClose();
+		for (AuctionBidderChannel channel : channelList) {
+			channel.sendClose();
 		}
 	}
 	
 	private void notifyPrice(int price, int increment, String bidderId) {
-		for (AuctionCommandHandler broker : brokerList) {
-			broker.sendPrice(price, increment, bidderId);
+		for (AuctionBidderChannel channel : channelList) {
+			channel.sendPrice(price, increment, bidderId);
 		}
 	}
 }	
