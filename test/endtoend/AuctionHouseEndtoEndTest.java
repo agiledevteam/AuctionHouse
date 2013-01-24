@@ -28,7 +28,7 @@ public class AuctionHouseEndtoEndTest {
 		bidder1.receivedPriceMessage(1000, 50, "Broker");
 		app.showBidderJoined(bidder1.getId());	// actual "JOIN" command received and send current price
 		bidder1.bid();
-		bidder1.receivedPriceMessage(1050, 50, "sniper");
+		bidder1.receivedPriceMessage(1050, 50, bidder1.getId());
 		app.showBidderBidding();
 		app.closeAuction();
 		bidder1.receivedClosedMessage();

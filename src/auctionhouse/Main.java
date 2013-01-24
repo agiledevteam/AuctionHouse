@@ -2,6 +2,7 @@ package auctionhouse;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
@@ -15,34 +16,35 @@ import org.jivesoftware.smack.packet.Message;
 
 public class Main implements UserActionListener {
 	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
-	public static final String BID_COMMAND_FORMAT  = "SOLVersion: 1.1; Command: BID; Price: %d;";
-	public static final String PRICE_EVENT_FORMAT  = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
-	public static final String CLOSE_EVENT_FORMAT  = "SOLVersion: 1.1; Event: CLOSE;";
-	
+	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
+	public static final String PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
+	public static final String CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
+
 	private MainWindow ui;
 
-	protected Chat chat;
+	protected ArrayList<Chat> chatList = new ArrayList<Chat>();
 
 	public Main() throws Exception {
-		
+
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
 				ui = new MainWindow(Main.this);
 			}
 		});
-		
-		ConnectionConfiguration config = new ConnectionConfiguration("localhost", 5222);
+
+		ConnectionConfiguration config = new ConnectionConfiguration(
+				"localhost", 5222);
 		XMPPConnection connection = new XMPPConnection(config);
 		connection.connect();
 		connection.login("auction-item-54321@localhost", "auction");
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
-				Main.this.chat = chat;
+				Main.this.chatList.add(chat);
 				XMPPAuction auction = new XMPPAuction(chat);
-				chat.addMessageListener(new AuctionCommandTranslator("item-54321",
-						new AuctionBroker(auction, ui)));
+				chat.addMessageListener(new AuctionCommandTranslator(
+						"item-54321", new AuctionBroker(auction, ui)));
 			}
 		});
 
@@ -51,21 +53,22 @@ public class Main implements UserActionListener {
 
 	public static void main(String... args) throws Exception {
 		new Main();
-
 	}
 
 	private void disconnectWhenUICloses(final XMPPConnection connection) {
 		ui.addWindowListener(new WindowAdapter() {
-		    public void windowClosed(WindowEvent e) {
-		    	connection.disconnect();
-		    }
+			public void windowClosed(WindowEvent e) {
+				connection.disconnect();
+			}
 		});
 	}
-	
+
 	@Override
 	public void closeAuction() {
 		try {
-			chat.sendMessage(CLOSE_EVENT_FORMAT);
+			for (Chat chat : chatList) {
+				chat.sendMessage(CLOSE_EVENT_FORMAT);
+			}
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		}
