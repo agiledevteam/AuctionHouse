@@ -65,7 +65,8 @@ public class FakeBidder implements MessageListener {
 	}
 
 	public void stop() {
-		connection.disconnect();
+		if (connection != null)
+			connection.disconnect();
 	}
 
 	public String getId(){

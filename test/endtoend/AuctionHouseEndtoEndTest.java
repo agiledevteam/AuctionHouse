@@ -83,6 +83,7 @@ public class AuctionHouseEndtoEndTest {
 	@After
 	public void stopAuction() {
 		bidder1.stop();
+		bidder2.stop();
 	}
 	
 	
