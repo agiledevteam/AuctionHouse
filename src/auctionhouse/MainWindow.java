@@ -73,7 +73,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 		return textArea;
 	}
 
-	public void setStatus(String statusText, int lastPrice ,String bidder) {
+	@Override
+	public void setStatus(String statusText, int lastPrice, String bidder) {
 		auctionStatus.setText(statusText);
 		logArea.append(String.format(AUCTION_LOG_FORMAT, bidder, statusText, lastPrice));
 	}

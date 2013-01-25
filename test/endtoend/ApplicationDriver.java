@@ -25,6 +25,7 @@ public class ApplicationDriver extends JFrameDriver {
 				showingOnScreen()), new AWTEventQueueProber(3000, 200));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void showsStatus(String status) {
 		new JLabelDriver(this, named(MainWindow.AUCTION_STATUS))
 				.hasText(equalTo(status));
@@ -34,10 +35,12 @@ public class ApplicationDriver extends JFrameDriver {
 		closeButton().click();
 	}
 
+	@SuppressWarnings("unchecked")
 	private JButtonDriver closeButton() {
 		return new JButtonDriver(this, JButton.class, named(MainWindow.CLOSE_BUTTON));
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void showsBidderLog(String bidderId, String status, int price) {
 		new JTextComponentDriver(this, JTextArea.class ,named(MainWindow.AUCTION_LOG))
 		.hasText(containsString(String.format(MainWindow.AUCTION_LOG_FORMAT, bidderId, status, price)));
