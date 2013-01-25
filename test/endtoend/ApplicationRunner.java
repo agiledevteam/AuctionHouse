@@ -41,10 +41,13 @@ public class ApplicationRunner {
 		driver.showsStatus("Bidding");
 	}
 
+	public void showsWinnerIs(String id) {
+		driver.showsWinnerIs(id);
+	}
+
 	public void stop() {
 		if (driver != null) {
 			driver.dispose();
 		}
 	}
-
 }

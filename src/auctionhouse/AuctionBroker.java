@@ -2,6 +2,8 @@ package auctionhouse;
 
 import java.util.ArrayList;
 
+import com.sun.istack.internal.logging.Logger;
+
 public class AuctionBroker implements BidderObserver {
 	
 	protected ArrayList<AuctionBidderChannel> channelList = new ArrayList<AuctionBidderChannel>();
@@ -27,12 +29,14 @@ public class AuctionBroker implements BidderObserver {
 	
 	@Override
 	public void updateBid(int price, String bidderId) {
-		this.currentPrice = price;
-		this.winner = bidderId;
-		
-		notifyPrice(currentPrice, increment, bidderId);
+		Logger.getLogger("han", AuctionBroker.class).entering(price, bidderId);
+		if (currentPrice < price) {
+			this.currentPrice = price;
+			this.winner = bidderId;
+		}
+		notifyPrice(currentPrice, increment, winner);
 	}
-	
+
 	@Override
 	public void add(AuctionBidderChannel channel) {
 		this.channelList.add(channel);

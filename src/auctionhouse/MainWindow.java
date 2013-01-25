@@ -18,10 +18,12 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private final JLabel auctionStatus = statusLabel();
 	private final JButton closeButton = closeJButton();
 	private final JTextArea logArea = logJTextArea(); 
+	private final JLabel winnerLabel = winnerLabel();
 	public static final String CLOSE_BUTTON = "CloseButton";
 	public static final String AUCTION_STATUS = "AuctionStatus";
 	public static final String AUCTION_HOUSE = "AuctionHouse";
 	public static final String AUCTION_LOG = "AuctionLog";
+	public static final String WINNER_LABEL = "WinnerLabel";
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
 	
@@ -44,8 +46,10 @@ public class MainWindow extends JFrame implements BrokerListener {
 	    final Container contentPane = getContentPane(); 
 	    
 	    JPanel panel = new JPanel(new FlowLayout());
-	    panel.add(auctionStatus, BorderLayout.WEST);
-	    panel.add(closeButton, BorderLayout.EAST); 
+	    panel.add(auctionStatus);
+	    panel.add(closeButton);
+	    panel.add(new JLabel("Winner is "));
+	    panel.add(winnerLabel);
 	    
 	    contentPane.setLayout(new BorderLayout());
 	    contentPane.add(panel, BorderLayout.NORTH);
@@ -71,6 +75,13 @@ public class MainWindow extends JFrame implements BrokerListener {
 		textArea.setName(MainWindow.AUCTION_LOG);
 		textArea.setText("-------\n");
 		return textArea;
+	}
+
+	private JLabel winnerLabel() {
+		JLabel label = new JLabel();
+		label.setName(MainWindow.WINNER_LABEL);
+		label.setText("");
+		return label;
 	}
 
 	@Override
