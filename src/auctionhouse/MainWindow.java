@@ -16,13 +16,17 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
 	private final JLabel auctionStatus = statusLabel();
-	private final JButton closeButton = closeJButton();
+	private final JButton actionButton = makeActionButton();
 	private final JTextArea logArea = logJTextArea(); 
-	public static final String CLOSE_BUTTON = "CloseButton";
+	public static final String ACTION_BUTTON = "ActionButton";
+
 	public static final String AUCTION_STATUS = "AuctionStatus";
 	public static final String AUCTION_HOUSE = "AuctionHouse";
 	public static final String AUCTION_LOG = "AuctionLog";
 
+	public static final String ACTION_BUTTON_START = "Start";
+	public static final String ACTION_BUTTON_CLOSE = "Close";
+	
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
 	
 	public MainWindow(final UserActionListener listener) {
@@ -31,10 +35,19 @@ public class MainWindow extends JFrame implements BrokerListener {
 		fillContentPane();
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		closeButton.addActionListener(new ActionListener() {
+		actionButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.closeAuction();
+				if (ACTION_BUTTON_START.equals(actionButton.getText())) {
+					listener.openAuction("localhost", 5222, "auction-item-54321@localhost", "auction");
+					actionButton.setText(ACTION_BUTTON_CLOSE);
+					setStatus("Started", 0, "");
+				}
+				else {
+					listener.closeAuction();
+					actionButton.setText(ACTION_BUTTON_START);
+					setStatus("Closed", 0, "");
+				}
 			}
 		});
 		setVisible(true);
@@ -45,7 +58,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	    
 	    JPanel panel = new JPanel(new FlowLayout());
 	    panel.add(auctionStatus, BorderLayout.WEST);
-	    panel.add(closeButton, BorderLayout.EAST); 
+	    panel.add(actionButton, BorderLayout.EAST); 
 	    
 	    contentPane.setLayout(new BorderLayout());
 	    contentPane.add(panel, BorderLayout.NORTH);
@@ -55,14 +68,14 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private static JLabel statusLabel() {
 		JLabel label = new JLabel();
 		label.setName(MainWindow.AUCTION_STATUS);
-		label.setText("Started");
+		label.setText("Not Started");
 		return label;
 	}
 	
-	private static JButton closeJButton() {
+	private static JButton makeActionButton() {
 		JButton button = new JButton();
-		button.setName(MainWindow.CLOSE_BUTTON);
-		button.setText("Close");
+		button.setName(MainWindow.ACTION_BUTTON);
+		button.setText(ACTION_BUTTON_START);
 		return button;
 	}
 

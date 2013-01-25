@@ -12,6 +12,7 @@ public class ApplicationRunner {
 			public void run() {
 				try {
 					Main.main("localhost", "5222", "item-54321", "auction");
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -21,6 +22,7 @@ public class ApplicationRunner {
 		thread.setDaemon(true);
 		thread.start();
 		driver = new ApplicationDriver();
+		driver.clickActionButton();
 	}
 
 	public void showsStarted() {
@@ -33,7 +35,7 @@ public class ApplicationRunner {
 	}
 
 	public void closeAuction() {
-		driver.clickCloseButton();
+		driver.clickActionButton();
 	}
 
 	public void showBidderBidding(String bidderId, int price) {
