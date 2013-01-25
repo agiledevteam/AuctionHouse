@@ -8,11 +8,9 @@ import org.jivesoftware.smack.packet.Message;
 
 public class AuctionCommandTranslator implements MessageListener {
 
-	String itemId;
 	AuctionCommandHandler handler;
 
-	public AuctionCommandTranslator(String itemId, AuctionCommandHandler handler) {
-		this.itemId = itemId;
+	public AuctionCommandTranslator(AuctionCommandHandler handler) {
 		this.handler = handler;
 	}
 

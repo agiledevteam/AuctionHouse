@@ -64,7 +64,7 @@ public class Main implements UserActionListener {
 
 				broker.add(channel);
 				chat.addMessageListener(new AuctionCommandTranslator(
-						"item-54321", channel));
+						channel));
 			}
 		});
 

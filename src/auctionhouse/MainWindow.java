@@ -3,10 +3,12 @@ package auctionhouse;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +18,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
 	private final JLabel statusLabel = statusLabel();
+	private final JEditorPane priceEditorPane = priceEditorPane(1000);
+	private final JEditorPane incrementEditorPane = incrementEditorPane(100);
 	private final JButton startButton = startButton();
 	private final JButton closeButton = closeButton();
 	private final JTextArea logArea = logJTextArea();
@@ -23,6 +27,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	public static final String START_BUTTON = "StartButton";
 	public static final String CLOSE_BUTTON = "CloseButton";
+	private static final String PRICE_EDIT = "AuctionPrice";
+	private static final String INCREMENT_EDIT = "AuctionIncrement";
 
 	public static final String AUCTION_STATUS = "AuctionStatus";
 	public static final String AUCTION_HOUSE = "AuctionHouse";
@@ -58,15 +64,26 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private void fillContentPane() {
 		final Container contentPane = getContentPane();
+		contentPane.setLayout(new BorderLayout());
 
-		JPanel panel = new JPanel(new FlowLayout());
-		panel.add(new JLabel("Winner is "));
-		panel.add(winnerLabel);
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,2));
+		
+		panel.add(new JLabel("Start Price"));
+		panel.add(priceEditorPane);
+
+		panel.add(new JLabel("Increment"));
+		panel.add(incrementEditorPane);
+
 		panel.add(startButton);
 		panel.add(closeButton);
-		panel.add(statusLabel);
 
-		contentPane.setLayout(new BorderLayout());
+		panel.add(new JLabel("Winner is "));
+		panel.add(winnerLabel);
+
+		panel.add(new JLabel("Price is "));
+		panel.add(statusLabel);
+		
 		contentPane.add(panel, BorderLayout.NORTH);
 		contentPane.add(logArea, BorderLayout.SOUTH);
 	}
@@ -76,6 +93,20 @@ public class MainWindow extends JFrame implements BrokerListener {
 		label.setName(MainWindow.AUCTION_STATUS);
 		label.setText("Not Started");
 		return label;
+	}
+
+	private static JEditorPane priceEditorPane(int defaultPrice) {
+		JEditorPane editorPane = new JEditorPane();
+		editorPane.setName(MainWindow.PRICE_EDIT);
+		editorPane.setText(String.valueOf(defaultPrice));
+		return editorPane;
+	}
+
+	private static JEditorPane incrementEditorPane(int defaultIncrement) {
+		JEditorPane editorPane = new JEditorPane();
+		editorPane.setName(MainWindow.INCREMENT_EDIT);
+		editorPane.setText(String.valueOf(defaultIncrement));
+		return editorPane;
 	}
 
 	private static JButton startButton() {
