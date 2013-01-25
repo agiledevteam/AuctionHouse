@@ -29,7 +29,7 @@ public class AuctionBroker implements BidderObserver {
 	
 	@Override
 	public void updateBid(int price, String bidderId) {
-		Logger.getLogger("han", AuctionBroker.class).entering(price, bidderId);
+		Logger.getLogger(AuctionBroker.class).info(Thread.currentThread().getId() +  ") updateBid: " + price + ", " + bidderId);
 		if (currentPrice < price) {
 			this.currentPrice = price;
 			this.winner = bidderId;

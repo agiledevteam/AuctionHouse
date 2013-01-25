@@ -16,6 +16,8 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
+import com.sun.istack.internal.logging.Logger;
+
 import auctionhouse.Main;
 
 public class FakeBidder implements MessageListener {
@@ -25,10 +27,10 @@ public class FakeBidder implements MessageListener {
 	private XMPPConnection connection;
 	private final String bidderId;
 
-	public FakeBidder(String bidderId){
+	public FakeBidder(String bidderId) {
 		this.bidderId = bidderId;
 	}
-	
+
 	public void join() throws Exception {
 		ConnectionConfiguration config = new ConnectionConfiguration(
 				"localhost", 5222);
@@ -61,6 +63,9 @@ public class FakeBidder implements MessageListener {
 	}
 
 	public void bid(int price) throws XMPPException {
+		Logger.getLogger(FakeBidder.class).info(
+				Thread.currentThread().getId() + ") bid" + getId() + ", "
+						+ price);
 		chat.sendMessage(String.format(Main.BID_COMMAND_FORMAT, price));
 	}
 
@@ -69,8 +74,8 @@ public class FakeBidder implements MessageListener {
 			connection.disconnect();
 	}
 
-	public String getId(){
+	public String getId() {
 		return bidderId;
 	}
-	
+
 }

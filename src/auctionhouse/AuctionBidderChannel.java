@@ -16,13 +16,13 @@ public class AuctionBidderChannel implements AuctionCommandHandler {
 	@Override
 	public void onJoin(String bidderId) {
 		auction.sendPrice(broker.getPrice(), broker.getIncrement(), broker.getWinner());
-		listener.setStatus("Joined", broker.getPrice(), bidderId);
+		listener.setStatus("Joined", broker.getWinner());
 	}
 
 	@Override
 	public void onBid(String bidderId, int price) {
 		broker.updateBid(price, bidderId);
-		listener.setStatus("Bidding", broker.getPrice(), bidderId);
+		listener.setStatus("Bidding", broker.getWinner());
 	}
 
 	@Override

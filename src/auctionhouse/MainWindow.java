@@ -15,7 +15,7 @@ import javax.swing.JTextArea;
 public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
-	private final JLabel auctionStatus = statusLabel();
+	private final JLabel statusLabel = statusLabel();
 	private final JButton closeButton = closeJButton();
 	private final JTextArea logArea = logJTextArea(); 
 	private final JLabel winnerLabel = winnerLabel();
@@ -25,8 +25,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String AUCTION_LOG = "AuctionLog";
 	public static final String WINNER_LABEL = "WinnerLabel";
 
-	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
-	
 	public MainWindow(final UserActionListener listener) {
 		super("Auction House");
 		setName(MainWindow.AUCTION_HOUSE);
@@ -46,7 +44,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	    final Container contentPane = getContentPane(); 
 	    
 	    JPanel panel = new JPanel(new FlowLayout());
-	    panel.add(auctionStatus);
+	    panel.add(statusLabel);
 	    panel.add(closeButton);
 	    panel.add(new JLabel("Winner is "));
 	    panel.add(winnerLabel);
@@ -85,8 +83,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	}
 
 	@Override
-	public void setStatus(String statusText, int lastPrice, String bidder) {
-		auctionStatus.setText(statusText);
-		logArea.append(String.format(AUCTION_LOG_FORMAT, bidder, statusText, lastPrice));
+	public void setStatus(String status, String winner) {
+		statusLabel.setText(status);
+		winnerLabel.setText(winner);
 	}
 }
