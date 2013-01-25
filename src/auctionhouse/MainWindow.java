@@ -60,10 +60,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 		final Container contentPane = getContentPane();
 
 		JPanel panel = new JPanel(new FlowLayout());
-		panel.add(statusLabel);
-		panel.add(closeButton);
 		panel.add(new JLabel("Winner is "));
 		panel.add(winnerLabel);
+		panel.add(startButton);
+		panel.add(closeButton);
+		panel.add(statusLabel);
 
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(panel, BorderLayout.NORTH);
