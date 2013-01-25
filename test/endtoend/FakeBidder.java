@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.containsString;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -25,10 +26,10 @@ public class FakeBidder implements MessageListener {
 	private XMPPConnection connection;
 	private final String bidderId;
 
-	public FakeBidder(String bidderId){
+	public FakeBidder(String bidderId) {
 		this.bidderId = bidderId;
 	}
-	
+
 	public void join() throws Exception {
 		ConnectionConfiguration config = new ConnectionConfiguration(
 				"localhost", 5222);
@@ -61,6 +62,9 @@ public class FakeBidder implements MessageListener {
 	}
 
 	public void bid(int price) throws XMPPException {
+		Logger.getLogger("FakeBidder").info(
+				Thread.currentThread().getId() + ") bid" + getId() + ", "
+						+ price);
 		chat.sendMessage(String.format(Main.BID_COMMAND_FORMAT, price));
 	}
 
@@ -69,8 +73,8 @@ public class FakeBidder implements MessageListener {
 			connection.disconnect();
 	}
 
-	public String getId(){
+	public String getId() {
 		return bidderId;
 	}
-	
+
 }

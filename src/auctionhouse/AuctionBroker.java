@@ -1,6 +1,7 @@
 package auctionhouse;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class AuctionBroker implements BidderObserver {
 	
@@ -27,12 +28,14 @@ public class AuctionBroker implements BidderObserver {
 	
 	@Override
 	public void updateBid(int price, String bidderId) {
-		this.currentPrice = price;
-		this.winner = bidderId;
-		
-		notifyPrice(currentPrice, increment, bidderId);
+		Logger.getLogger("AuctionBroker").info(Thread.currentThread().getId() +  ") updateBid: " + price + ", " + bidderId);
+		if (currentPrice < price) {
+			this.currentPrice = price;
+			this.winner = bidderId;
+		}
+		notifyPrice(currentPrice, increment, winner);
 	}
-	
+
 	@Override
 	public void add(AuctionBidderChannel channel) {
 		this.channelList.add(channel);

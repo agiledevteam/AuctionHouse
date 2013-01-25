@@ -79,6 +79,33 @@ public class AuctionHouseEndtoEndTest {
 		bidder1.receivedClosedMessage();
 		bidder2.receivedClosedMessage();
 	}
+
+	@Test
+	public void twoBidderRacesWithSamePrice() throws Exception {
+		app.startAuction();
+		app.showsStarted();
+		bidder1.join();
+		bidder1.receivedPriceMessage(1000, 50, "Broker");
+		app.showBidderJoined(bidder1.getId(), 1000);
+		bidder2.join();
+		bidder2.receivedPriceMessage(1000, 50, "Broker");
+		app.showBidderJoined(bidder2.getId(), 1000);
+		
+		bidder1.bid(1050);
+		bidder2.bid(1050);
+		
+		bidder1.receivedPriceMessage(1100, 50, bidder1.getId());
+		bidder1.receivedPriceMessage(1100, 50, bidder1.getId());
+
+		bidder2.receivedPriceMessage(1100, 50, bidder1.getId());
+		bidder2.receivedPriceMessage(1100, 50, bidder1.getId());
+		
+		app.showsWinnerIs(bidder1.getId());
+
+		app.closeAuction();
+		bidder1.receivedClosedMessage();
+		bidder2.receivedClosedMessage();
+	}
 	
 	@After
 	public void stopAuction() {

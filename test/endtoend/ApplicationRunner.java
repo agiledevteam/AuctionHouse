@@ -17,12 +17,11 @@ public class ApplicationRunner {
 					e.printStackTrace();
 				}
 			}
-
 		});
 		thread.setDaemon(true);
 		thread.start();
 		driver = new ApplicationDriver();
-		driver.clickActionButton();
+		driver.clickStartButton();
 	}
 
 	public void showsStarted() {
@@ -30,17 +29,19 @@ public class ApplicationRunner {
 	}
 
 	public void showBidderJoined(String bidderId, int price) {
-		driver.showsBidderLog(bidderId, "Joined", price);
 		driver.showsStatus("Joined");
 	}
 
 	public void closeAuction() {
-		driver.clickActionButton();
+		driver.clickCloseButton();
 	}
 
 	public void showBidderBidding(String bidderId, int price) {
-		driver.showsBidderLog(bidderId, "Bidding", price);
 		driver.showsStatus("Bidding");
+	}
+
+	public void showsWinnerIs(String id) {
+		driver.showsWinnerIs(id);
 	}
 
 	public void stop() {
@@ -48,5 +49,4 @@ public class ApplicationRunner {
 			driver.dispose();
 		}
 	}
-
 }
