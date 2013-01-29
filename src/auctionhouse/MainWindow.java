@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import endtoend.Config;
-
 public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
@@ -51,8 +49,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.openAuction(Config.host, 5222, Config.auctionId,
-						Config.auctionPassword);
+				listener.openAuction("localhost", 5222,
+						"auction-item-54321", "auction");
 				setStatus("Started", "", Integer.valueOf(priceEditorPane.getText()));
 			}
 		});
@@ -71,8 +69,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 		contentPane.setLayout(new BorderLayout());
 
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0, 2));
-
+		panel.setLayout(new GridLayout(0,2));
+		
 		panel.add(new JLabel("Start Price"));
 		panel.add(priceEditorPane);
 
@@ -90,7 +88,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 		panel.add(new JLabel("Status "));
 		panel.add(statusLabel);
-
+		
 		contentPane.add(panel, BorderLayout.NORTH);
 		contentPane.add(logArea, BorderLayout.SOUTH);
 	}

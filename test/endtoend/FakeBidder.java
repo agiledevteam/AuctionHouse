@@ -24,22 +24,21 @@ public class FakeBidder implements MessageListener {
 	private Chat chat;
 	private BlockingQueue<Message> messages = new LinkedBlockingQueue<Message>();
 	private XMPPConnection connection;
-	private final String jid;
-	private final String password;
+	private final String bidderId;
 
-	public FakeBidder(String bidderJId, String bidderPassword) {
-		this.jid = bidderJId;
-		this.password = bidderPassword;
+	public FakeBidder(String bidderId) {
+		this.bidderId = bidderId;
 	}
 
 	public void join() throws Exception {
 		ConnectionConfiguration config = new ConnectionConfiguration(
-				Config.host, 5222);
+				"localhost", 5222);
 		connection = new XMPPConnection(config);
 		connection.connect();
-		connection.login(jid, password);
+		connection.login(bidderId, "bidder");
 
-		chat = connection.getChatManager().createChat(Config.auctionId, this);
+		chat = connection.getChatManager().createChat(
+				"auction-item-54321@localhost", this);
 		chat.sendMessage(Main.JOIN_COMMAND_FORMAT);
 	}
 
@@ -75,7 +74,7 @@ public class FakeBidder implements MessageListener {
 	}
 
 	public String getId() {
-		return jid.split("@")[0];
+		return bidderId;
 	}
 
 }

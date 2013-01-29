@@ -6,8 +6,8 @@ import org.junit.Test;
 public class AuctionHouseEndtoEndTest {
 
 	ApplicationRunner app = new ApplicationRunner();
-	FakeBidder bidder1 = new FakeBidder(Config.bidder1Id, Config.bidder1Password);
-	FakeBidder bidder2 = new FakeBidder(Config.bidder2Id, Config.bidder2Password);
+	FakeBidder bidder1 = new FakeBidder("bidder-1");
+	FakeBidder bidder2 = new FakeBidder("bidder-2");
 	
 	@Test
 	public void clientJoinedButAuctionClosed() throws Exception {
