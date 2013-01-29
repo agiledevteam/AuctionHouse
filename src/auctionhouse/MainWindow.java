@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
+	private final JLabel priceLabel = priceLabel();
 	private final JLabel statusLabel = statusLabel();
 	private final JEditorPane priceEditorPane = priceEditorPane(1000);
 	private final JEditorPane incrementEditorPane = incrementEditorPane(100);
@@ -30,6 +31,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private static final String PRICE_EDIT = "AuctionPrice";
 	private static final String INCREMENT_EDIT = "AuctionIncrement";
 
+	public static final String AUCTION_PRICE = "AuctionPrice";
 	public static final String AUCTION_STATUS = "AuctionStatus";
 	public static final String AUCTION_HOUSE = "AuctionHouse";
 	public static final String AUCTION_LOG = "AuctionLog";
@@ -49,14 +51,14 @@ public class MainWindow extends JFrame implements BrokerListener {
 			public void actionPerformed(ActionEvent e) {
 				listener.openAuction("localhost", 5222,
 						"auction-item-54321", "auction");
-				setStatus("Started", "");
+				setStatus("Started", "", Integer.valueOf(priceEditorPane.getText()));
 			}
 		});
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listener.closeAuction();
-				setStatus("Closed", "");
+				setStatus("Closed", winnerLabel.getText(), Integer.valueOf(priceLabel.getText()));
 			}
 		});
 		setVisible(true);
@@ -82,10 +84,20 @@ public class MainWindow extends JFrame implements BrokerListener {
 		panel.add(winnerLabel);
 
 		panel.add(new JLabel("Price is "));
+		panel.add(priceLabel);
+
+		panel.add(new JLabel("Status "));
 		panel.add(statusLabel);
 		
 		contentPane.add(panel, BorderLayout.NORTH);
 		contentPane.add(logArea, BorderLayout.SOUTH);
+	}
+
+	private static JLabel priceLabel() {
+		JLabel label = new JLabel();
+		label.setName(MainWindow.AUCTION_PRICE);
+		label.setText("0");
+		return label;
 	}
 
 	private static JLabel statusLabel() {
@@ -137,9 +149,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 		return label;
 	}
 
+	
 	@Override
-	public void setStatus(String status, String winner) {
+	public void setStatus(String status, String winner, int price) {
 		statusLabel.setText(status);
 		winnerLabel.setText(winner);
+		priceLabel.setText(String.valueOf(price));
 	}
 }

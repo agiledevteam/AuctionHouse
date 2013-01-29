@@ -2,5 +2,5 @@ package auctionhouse;
 
 public interface BrokerListener {
 
-	void setStatus(String statusText, String winner);
+	void setStatus(String statusText, String winner, int price);
 }
