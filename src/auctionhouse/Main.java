@@ -57,9 +57,10 @@ public class Main implements UserActionListener {
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
+				String bidderId = idFrom(chat.getParticipant());
 				XMPPAuction auction = new XMPPAuction(chat);
 				Bidder bidder = new Bidder(
-						auction, broker);
+						bidderId, auction, broker);
 
 				broker.add(bidder);
 				chat.addMessageListener(new AuctionCommandTranslator(
@@ -68,6 +69,10 @@ public class Main implements UserActionListener {
 		});
 
 		this.disconnectWhenUICloses(connection);
+	}
+
+	protected String idFrom(String jid) {
+		return jid.split("@")[0];
 	}
 
 	@Override

@@ -52,6 +52,7 @@ public class AuctionBroker implements BidderObserver {
 	@Override
 	public void add(Bidder channel) {
 		this.channelList.add(channel);
+		listener.bidderAdded(channel);
 	}
 	
 	@Override

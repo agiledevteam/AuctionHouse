@@ -25,6 +25,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private final JButton startButton = startButton();
 	private final JButton closeButton = closeButton();
 	private final JLabel winnerLabel = winnerLabel();
+	private final BidderTableModel bidders = new BidderTableModel();
 	private final JTable bidderTable = bidderTable();
 
 	public static final String START_BUTTON = "StartButton";
@@ -70,7 +71,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private JTable bidderTable() {
 		JTable table = new JTable();
 		table.setName(BIDDER_TABLE);
-		table.setModel(new BidderTableModel());
+		table.setModel(bidders);
 		return table;
 	}
 
@@ -145,13 +146,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 		return button;
 	}
 
-	private JTextArea logJTextArea() {
-		JTextArea textArea = new JTextArea(10, 20);
-		textArea.setName(MainWindow.AUCTION_LOG);
-		textArea.setText("-------\n");
-		return textArea;
-	}
-
 	private JLabel winnerLabel() {
 		JLabel label = new JLabel();
 		label.setName(MainWindow.WINNER_LABEL);
@@ -165,5 +159,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 		statusLabel.setText(status);
 		winnerLabel.setText(winner);
 		priceLabel.setText(String.valueOf(price));
+	}
+
+	@Override
+	public void bidderAdded(Bidder bidder) {
+		bidders.addBidder(new BidderSnapshot(bidder.getId()));
+		
 	}
 }
