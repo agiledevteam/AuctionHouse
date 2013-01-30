@@ -6,8 +6,9 @@ public interface BidderObserver {
 	String getWinner();
 	int getIncrement();
 
-	void updateBid(int price, String bidderId);
-	void add(AuctionBidderChannel bidCounter);
+	void bid(int price, String bidderId);
+	void add(Bidder bidCounter);
 	void notifyClose();
+	void join(Auction auction);
 
 }

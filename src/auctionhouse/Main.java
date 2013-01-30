@@ -18,7 +18,7 @@ public class Main implements UserActionListener {
 	public static final String CLOSE_EVENT_FORMAT = "SOLVersion: 1.1; Event: CLOSE;";
 
 	private MainWindow ui;
-	private BidderObserver broker = new AuctionBroker();
+	private BidderObserver broker;
 
 	public Main() throws Exception {
 
@@ -26,6 +26,7 @@ public class Main implements UserActionListener {
 			@Override
 			public void run() {
 				ui = new MainWindow(Main.this);
+				broker = new AuctionBroker(ui);
 			}
 		});
 
@@ -59,12 +60,12 @@ public class Main implements UserActionListener {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
 				XMPPAuction auction = new XMPPAuction(chat);
-				AuctionBidderChannel channel = new AuctionBidderChannel(
-						auction, ui, broker);
+				Bidder bidder = new Bidder(
+						auction, broker);
 
-				broker.add(channel);
+				broker.add(bidder);
 				chat.addMessageListener(new AuctionCommandTranslator(
-						channel));
+						bidder));
 			}
 		});
 
