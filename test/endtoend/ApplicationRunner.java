@@ -28,8 +28,8 @@ public class ApplicationRunner {
 		driver.showsStatus("Started");
 	}
 
-	public void showBidderJoined(String bidderId, int price) {
-		driver.showsStatus("Joined");
+	public void showBidderJoined(String bidderId) {
+		driver.showsBidderStatus(bidderId, "Joined");
 	}
 
 	public void closeAuction() {
@@ -37,7 +37,7 @@ public class ApplicationRunner {
 	}
 
 	public void showBidderBidding(String bidderId, int price) {
-		driver.showsStatus("Bidding");
+		driver.showsBidderStatus(bidderId, price);
 	}
 
 	public void showsWinnerIs(String id) {

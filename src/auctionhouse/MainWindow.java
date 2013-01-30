@@ -2,7 +2,7 @@ package auctionhouse;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 public class MainWindow extends JFrame implements BrokerListener {
@@ -23,8 +24,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private final JEditorPane incrementEditorPane = incrementEditorPane(100);
 	private final JButton startButton = startButton();
 	private final JButton closeButton = closeButton();
-	private final JTextArea logArea = logJTextArea();
 	private final JLabel winnerLabel = winnerLabel();
+	private final JTable bidderTable = bidderTable();
 
 	public static final String START_BUTTON = "StartButton";
 	public static final String CLOSE_BUTTON = "CloseButton";
@@ -36,6 +37,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String AUCTION_HOUSE = "AuctionHouse";
 	public static final String AUCTION_LOG = "AuctionLog";
 	public static final String WINNER_LABEL = "WinnerLabel";
+	public static final String BIDDER_TABLE = "BidderTable";
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
 
@@ -43,6 +45,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		super("Auction House");
 		setName(MainWindow.AUCTION_HOUSE);
 		fillContentPane();
+		setMinimumSize(new Dimension(800, 600));
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -62,6 +65,13 @@ public class MainWindow extends JFrame implements BrokerListener {
 			}
 		});
 		setVisible(true);
+	}
+
+	private JTable bidderTable() {
+		JTable table = new JTable();
+		table.setName(BIDDER_TABLE);
+		table.setModel(new BidderTableModel());
+		return table;
 	}
 
 	private void fillContentPane() {
@@ -90,7 +100,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		panel.add(statusLabel);
 		
 		contentPane.add(panel, BorderLayout.NORTH);
-		contentPane.add(logArea, BorderLayout.SOUTH);
+		contentPane.add(bidderTable, BorderLayout.CENTER);
 	}
 
 	private static JLabel priceLabel() {

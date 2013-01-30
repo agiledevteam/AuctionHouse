@@ -29,8 +29,6 @@ public class Main implements UserActionListener {
 				broker = new AuctionBroker(ui);
 			}
 		});
-
-		//openAuction("localhost", 5222, "auction-item-54321@localhost", "auction");
 	}
 
 	public static void main(String... args) throws Exception {
