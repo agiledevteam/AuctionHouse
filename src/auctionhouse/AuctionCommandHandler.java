@@ -2,10 +2,6 @@ package auctionhouse;
 
 public interface AuctionCommandHandler {
 
-	void onJoin(String bidderId);
+	void onJoin(String bidderId, Auction auction);
 	void onBid(String bidderId, int price);
-	
-	void sendClose();
-	void sendPrice(int currentPrice, int increment, String winner);
-
 }
