@@ -11,6 +11,7 @@ public class BidderTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 5568967747069560297L;
 
 	private List<BidderSnapshot> bidders = new ArrayList<BidderSnapshot>();
+	private BidderSnapshot nullBidderSnapshot = new BidderSnapshot("", "");
 
 	@Override
 	public int getRowCount() {
@@ -26,9 +27,9 @@ public class BidderTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		int index = rowIndex * NUM_COLUMNS + columnIndex;
 		if (index < bidders.size()) {
-			return bidders.get(index).bidderId;
+			return bidders.get(index);
 		} else {
-			return "";
+			return nullBidderSnapshot;
 		}
 	}
 
@@ -37,5 +38,19 @@ public class BidderTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	
+	public void setBidder(BidderSnapshot bidderSnapshot) {
+		int index = findBidder(bidderSnapshot.bidderId);
+		bidders.set(index, bidderSnapshot);
+		fireTableDataChanged();
+	}
+
+	private int findBidder(String bidderId) {
+		for (int i = 0; i < bidders.size(); i++) {
+			if (bidderId.equals(bidders.get(i).bidderId)) {
+				return i;
+			}
+		}
+		throw new Defect("bidder not found");
+	}
+
 }

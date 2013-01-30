@@ -11,7 +11,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import auctionhouse.JBidderPanel;
+import auctionhouse.BidderPanel;
 import auctionhouse.MainWindow;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
@@ -42,9 +42,9 @@ public class ApplicationDriver extends JFrameDriver {
 				.hasCell(withBidder(bidderId, status));
 	}
 
-	private TypeSafeMatcher<JBidderPanel> withBidder(final String bidderId,
+	private TypeSafeMatcher<BidderPanel> withBidder(final String bidderId,
 			final String detail) {
-		return new TypeSafeMatcher<JBidderPanel>() {
+		return new TypeSafeMatcher<BidderPanel>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("Bidder(" + bidderId + ") with "
@@ -52,7 +52,7 @@ public class ApplicationDriver extends JFrameDriver {
 			}
 
 			@Override
-			protected boolean matchesSafely(JBidderPanel item) {
+			protected boolean matchesSafely(BidderPanel item) {
 				return item.matches(bidderId, detail);
 			}
 		};

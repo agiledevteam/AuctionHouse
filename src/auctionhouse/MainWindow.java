@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.table.TableCellRenderer;
 
 public class MainWindow extends JFrame implements BrokerListener {
 
@@ -69,7 +72,13 @@ public class MainWindow extends JFrame implements BrokerListener {
 	}
 
 	private JTable bidderTable() {
-		JTable table = new JTable();
+		final BidderRenderer renderer = new BidderRenderer();
+		JTable table = new JTable() {
+			@Override
+			public TableCellRenderer getCellRenderer(int row, int column) {
+				return renderer;
+			}
+		};
 		table.setName(BIDDER_TABLE);
 		table.setModel(bidders);
 		return table;
@@ -152,7 +161,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 		label.setText("");
 		return label;
 	}
-
 	
 	@Override
 	public void setStatus(String status, String winner, int price) {
@@ -162,8 +170,22 @@ public class MainWindow extends JFrame implements BrokerListener {
 	}
 
 	@Override
-	public void bidderAdded(Bidder bidder) {
-		bidders.addBidder(new BidderSnapshot(bidder.getId()));
-		
+	public void bidderAdded(final Bidder bidder) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				bidders.addBidder(new BidderSnapshot(bidder.getId(), "Joined"));
+			}
+		});
+	}
+
+	@Override
+	public void bidderChanged(final BidderSnapshot bidderSnapshot) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				bidders.setBidder(bidderSnapshot);
+			}
+		});
 	}
 }

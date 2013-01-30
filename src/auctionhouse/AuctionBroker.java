@@ -47,6 +47,7 @@ public class AuctionBroker implements BidderObserver {
 		}
 		notifyPrice(currentPrice, increment, winner);
 		listener.setStatus("Bidding", winner, price);
+		listener.bidderChanged(new BidderSnapshot(bidderId, Integer.toString(price)));
 	}
 
 	@Override
