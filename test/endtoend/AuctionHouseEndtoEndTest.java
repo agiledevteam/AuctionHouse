@@ -92,6 +92,7 @@ public class AuctionHouseEndtoEndTest {
 		app.showBidderJoined(bidder2.getId());
 		
 		bidder1.bid(1050);
+		Thread.sleep(10);
 		bidder2.bid(1050);
 		app.showBidderBidding(bidder1.getId(), 1050);
 		app.showBidderBidding(bidder2.getId(), 1050);

@@ -3,9 +3,9 @@ package auctionhouse;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class AuctionBroker implements BidderObserver {
+public class AuctionBroker implements AuctionCommandHandler {
 	
-	protected ArrayList<Bidder> channelList = new ArrayList<Bidder>();
+	protected ArrayList<Auction> auctionList = new ArrayList<Auction>();
 	
 	private String winner = "Broker";
 	private int currentPrice = 1000;
@@ -17,55 +17,35 @@ public class AuctionBroker implements BidderObserver {
 		this.listener = listener;
 	}
 
-	@Override
-	public int getPrice() {
-		return currentPrice;
+	public void sendClose() {
+		for (Auction auction : auctionList) {
+			auction.closeAuction();
+		}
 	}
 	
 	@Override
-	public String getWinner() {
-		return winner;
-	}
-	
-	@Override
-	public int getIncrement() {
-		return increment;
-	}
-	
-	@Override
-	public void join(Auction auction) {
+	public void onJoin(String bidderId, Auction auction) {
+		auctionList.add(auction);
 		auction.sendPrice(currentPrice, increment, winner);
-		listener.setStatus("Joined", winner, currentPrice);		
+		listener.setStatus("Joined", winner, currentPrice);
+		listener.bidderAdded(new BidderSnapshot(bidderId, "Joined"));
 	}
-	
+
 	@Override
-	public void bid(int price, String bidderId) {
+	public void onBid(String bidderId, int price) {
 		Logger.getLogger("AuctionBroker").info(Thread.currentThread().getId() +  ") updateBid: " + price + ", " + bidderId);
 		if (currentPrice < price) {
 			this.currentPrice = price;
 			this.winner = bidderId;
 		}
-		notifyPrice(currentPrice, increment, winner);
+		for (Auction auction : auctionList) {
+			auction.sendPrice(currentPrice, increment, winner);
+		}
 		listener.setStatus("Bidding", winner, price);
 		listener.bidderChanged(new BidderSnapshot(bidderId, Integer.toString(price)));
 	}
 
-	@Override
-	public void add(Bidder channel) {
-		this.channelList.add(channel);
-		listener.bidderAdded(channel);
-	}
-	
-	@Override
-	public void notifyClose() {
-		for (Bidder channel : channelList) {
-			channel.sendClose();
-		}
-	}
-	
-	private void notifyPrice(int price, int increment, String bidderId) {
-		for (Bidder channel : channelList) {
-			channel.sendPrice(price, increment, bidderId);
-		}
+	public String getWinner(){
+		return winner;
 	}
 }	

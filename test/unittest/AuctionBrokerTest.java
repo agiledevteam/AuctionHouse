@@ -25,9 +25,11 @@ public class AuctionBrokerTest {
 		});
 		
 		AuctionBroker broker = new AuctionBroker(listener);
-		int winningPrice = broker.getIncrement() + broker.getPrice();
-		broker.bid(winningPrice, "bidder-1");
-		broker.bid(winningPrice, "bidder-2");
+		int winningPrice = 5000;
+		
+		broker.onBid("bidder-1", winningPrice);
+		broker.onBid("bidder-2", winningPrice);
+		
 		assertEquals("bidder-1", broker.getWinner());
 		
 		context.assertIsSatisfied();

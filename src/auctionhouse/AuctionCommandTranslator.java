@@ -8,10 +8,12 @@ import org.jivesoftware.smack.packet.Message;
 
 public class AuctionCommandTranslator implements MessageListener {
 
-	AuctionCommandHandler handler;
+	private AuctionCommandHandler handler;
+	private Auction auction;
 
-	public AuctionCommandTranslator(AuctionCommandHandler handler) {
+	public AuctionCommandTranslator(AuctionCommandHandler handler, Auction auction) {
 		this.handler = handler;
+		this.auction = auction;
 	}
 
 	@Override
@@ -20,7 +22,7 @@ public class AuctionCommandTranslator implements MessageListener {
 		String commandType = event.get("Command");
 
 		if ("JOIN".equals(commandType)) {
-			handler.onJoin(bidder(chat));
+			handler.onJoin(bidder(chat), auction);
 		} else if ("BID".equals(commandType)) {
 			handler.onBid(bidder(chat), Integer.parseInt(event.get("Price")));
 		}

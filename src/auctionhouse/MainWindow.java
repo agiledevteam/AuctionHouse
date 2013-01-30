@@ -170,11 +170,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 	}
 
 	@Override
-	public void bidderAdded(final Bidder bidder) {
+	public void bidderAdded(final BidderSnapshot bidderSnapshot) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				bidders.addBidder(new BidderSnapshot(bidder.getId(), "Joined"));
+				bidders.addBidder(bidderSnapshot);
 			}
 		});
 	}
