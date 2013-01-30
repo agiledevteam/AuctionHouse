@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="lib" path="lib/hamcrest-core-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/hamcrest-library-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.6-src.jar"/>
+	<classpathentry kind="lib" path="lib/junit-dep-4.6.jar"/>
+	<classpathentry kind="lib" path="lib/smack_3_1_0.jar"/>
+	<classpathentry kind="lib" path="lib/smackx_3_1_0.jar"/>
+	<classpathentry kind="lib" path="lib/windowlicker-core-DEV.jar"/>
+	<classpathentry kind="lib" path="lib/windowlicker-swing-DEV.jar"/>
+	<classpathentry kind="lib" path="lib/jmock-2.5.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
