@@ -4,7 +4,14 @@ import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static org.hamcrest.Matchers.equalTo;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+
+import auctionhouse.JBidderPanel;
 import auctionhouse.MainWindow;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
@@ -18,19 +25,37 @@ public class ApplicationDriver extends JFrameDriver {
 
 	@SuppressWarnings("unchecked")
 	public ApplicationDriver() {
-		super(new GesturePerformer(), topLevelFrame(named(MainWindow.AUCTION_HOUSE),
-				showingOnScreen()), new AWTEventQueueProber(3000, 200));
+		super(new GesturePerformer(), topLevelFrame(
+				named(MainWindow.AUCTION_HOUSE), showingOnScreen()),
+				new AWTEventQueueProber(3000, 200));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void showsBidderStatus(String bidderId, int price) {
-		new JTableDriver(this, named(MainWindow.BIDDER_TABLE)).hasCell(withLabelText(bidderId));
+		new JTableDriver(this, named(MainWindow.BIDDER_TABLE))
+				.hasCell(withBidder(bidderId, Integer.toString(price)));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void showsBidderStatus(String bidderId, String status) {
-		new JLabelDriver(this, named(MainWindow.AUCTION_STATUS))
-				.hasText(equalTo(status));
+		new JTableDriver(this, named(MainWindow.BIDDER_TABLE))
+				.hasCell(withBidder(bidderId, status));
+	}
+
+	private TypeSafeMatcher<JBidderPanel> withBidder(final String bidderId,
+			final String detail) {
+		return new TypeSafeMatcher<JBidderPanel>() {
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("Bidder(" + bidderId + ") with "
+						+ detail);
+			}
+
+			@Override
+			protected boolean matchesSafely(JBidderPanel item) {
+				return item.matches(bidderId, detail);
+			}
+		};
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,19 +71,22 @@ public class ApplicationDriver extends JFrameDriver {
 	public void clickStartButton() {
 		startButton().click();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private JButtonDriver closeButton() {
-		return new JButtonDriver(this, JButton.class, named(MainWindow.CLOSE_BUTTON));
+		return new JButtonDriver(this, JButton.class,
+				named(MainWindow.CLOSE_BUTTON));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private JButtonDriver startButton() {
-		return new JButtonDriver(this, JButton.class, named(MainWindow.START_BUTTON));
+		return new JButtonDriver(this, JButton.class,
+				named(MainWindow.START_BUTTON));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void showsWinnerIs(String id) {
-		new JLabelDriver(this, named(MainWindow.WINNER_LABEL)).hasText(equalTo(id));
+		new JLabelDriver(this, named(MainWindow.WINNER_LABEL))
+				.hasText(equalTo(id));
 	}
 }
