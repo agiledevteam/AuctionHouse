@@ -1,4 +1,4 @@
-<project name="AuctionHouse" default="dist" basedir=".">
+<project name="AuctionHouse" default="test" basedir=".">
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="test" location="test"/>
@@ -16,7 +16,7 @@
   <target name="compile" depends="init"
     description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}" classpathref="classpath"/>
+    <javac srcdir="${src}" destdir="${build}" classpathref="classpath" encoding="UTF-8"/>
   </target>
 	<target name="test.compile" depends="compile">
 		<javac srcdir="${test}" destdir="${build}" classpathref="test.classpath" />
