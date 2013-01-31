@@ -1,33 +1,32 @@
 package auctionhouse;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Rectangle;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
 
 public class MainWindow extends JFrame implements BrokerListener {
 
 	private static final long serialVersionUID = -1320680914079154752L;
-	private final JLabel priceLabel = priceLabel();
-	private final JLabel statusLabel = statusLabel();
-	private final JEditorPane priceEditorPane = priceEditorPane(1000);
-	private final JEditorPane incrementEditorPane = incrementEditorPane(100);
-	private final JButton startButton = startButton();
-	private final JButton closeButton = closeButton();
-	private final JLabel winnerLabel = winnerLabel();
+
 	private final BidderTableModel bidders = new BidderTableModel();
 	private final JTable bidderTable = bidderTable();
 
@@ -44,6 +43,16 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String BIDDER_TABLE = "BidderTable";
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
+	private JTextField startPriceField;
+	private JTextField hostField;
+	private JTextField incrementField;
+	private JButton startButton;
+	private JButton stopButton;
+	private JLabel itemImageLabel;
+	private JLabel priceLabel;
+	private JLabel winnerLabel;
+	private JLabel statusLabel;
+	private JLabel lblWinner;
 
 	public MainWindow(final UserActionListener listener) {
 		super("Auction House");
@@ -56,16 +65,17 @@ public class MainWindow extends JFrame implements BrokerListener {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.openAuction("localhost", 5222,
+				String host = hostField.getText();
+				listener.openAuction(host, 5222,
 						"auction-item-54321", "auction");
-				setStatus("Started", "", Integer.valueOf(priceEditorPane.getText()));
+				setStatus("Started", "Broker", 1000);
 			}
 		});
-		closeButton.addActionListener(new ActionListener() {
+		stopButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listener.closeAuction();
-				setStatus("Closed", winnerLabel.getText(), Integer.valueOf(priceLabel.getText()));
+				setStatus("Closed", "", 0);
 			}
 		});
 		setVisible(true);
@@ -81,87 +91,116 @@ public class MainWindow extends JFrame implements BrokerListener {
 		};
 		table.setName(BIDDER_TABLE);
 		table.setModel(bidders);
+		table.setTableHeader(null);
 		return table;
 	}
 
 	private void fillContentPane() {
-		final Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
-
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,2));
+		getContentPane().setLayout(null);
+		JLabel lblHost = new JLabel("Host:");
+		lblHost.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
+		lblHost.setBounds(10, 13, 104, 15);
+		getContentPane().add(lblHost);
 		
-		panel.add(new JLabel("Start Price"));
-		panel.add(priceEditorPane);
-
-		panel.add(new JLabel("Increment"));
-		panel.add(incrementEditorPane);
-
-		panel.add(startButton);
-		panel.add(closeButton);
-
-		panel.add(new JLabel("Winner is "));
-		panel.add(winnerLabel);
-
-		panel.add(new JLabel("Price is "));
-		panel.add(priceLabel);
-
-		panel.add(new JLabel("Status "));
-		panel.add(statusLabel);
+		incrementField = new JTextField();
+		incrementField.setText("100");
+		incrementField.setBounds(120, 72, 316, 21);
+		getContentPane().add(incrementField);
 		
-		contentPane.add(panel, BorderLayout.NORTH);
-		contentPane.add(bidderTable, BorderLayout.CENTER);
+		startButton = new JButton("Start");
+		startButton.setBounds(668, 9, 104, 23);
+		startButton.setName(START_BUTTON);
+		getContentPane().add(startButton);
+		
+		JLabel lblStartPrice = new JLabel("Start Price:");
+		lblStartPrice.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
+		lblStartPrice.setBounds(10, 44, 104, 15);
+		getContentPane().add(lblStartPrice);
+		
+		startPriceField = new JTextField();
+		startPriceField.setText("1000");
+		startPriceField.setBounds(120, 41, 316, 21);
+		getContentPane().add(startPriceField);
+		startPriceField.setColumns(10);
+		
+		stopButton = new JButton("Stop");
+		stopButton.setBounds(668, 40, 104, 23);
+		stopButton.setName(CLOSE_BUTTON);
+		getContentPane().add(stopButton);
+		
+		JLabel lblIncrement = new JLabel("Increment:");
+		lblIncrement.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
+		lblIncrement.setBounds(10, 75, 104, 15);
+		getContentPane().add(lblIncrement);
+		
+		hostField = new JTextField();
+		hostField.setText("localhost");
+		hostField.setBounds(120, 10, 316, 21);
+		getContentPane().add(hostField);
+		
+		BufferedImage myPicture;
+		try {
+			myPicture = ImageIO.read(new File("photo.jpg"));
+			itemImageLabel = new JLabel(new ImageIcon( myPicture ));
+		} catch (IOException e) {
+			itemImageLabel = new JLabel("Image N/A");
+		}
+		
+		itemImageLabel.setBackground(new Color(255, 0, 0));
+		itemImageLabel.setBounds(12, 120, 102, 100);
+		getContentPane().add(itemImageLabel);
+		
+		JLabel lblNewLabel = new JLabel("임베디드 C를 위한 TDD");
+		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
+		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+		lblNewLabel.setBounds(120, 120, 316, 100);
+		getContentPane().add(lblNewLabel);
+		
+		BufferedImage winnerPicture;
+		JLabel winnerPictureLabel;
+		try {
+			winnerPicture = ImageIO.read(new File("images/avatars/frog.jpg"));
+			winnerPictureLabel = new JLabel(new ImageIcon( winnerPicture ));
+		} catch (IOException e) {
+			winnerPictureLabel = new JLabel("N/A");
+		}
+		winnerPictureLabel.setBounds(672, 120, 100, 100);
+		getContentPane().add(winnerPictureLabel);
+		
+		priceLabel = new JLabel("0");
+		priceLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		priceLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
+		priceLabel.setBounds(448, 170, 212, 50);
+		priceLabel.setName(MainWindow.AUCTION_PRICE);
+		getContentPane().add(priceLabel);
+		
+		winnerLabel = new JLabel("winnerId");
+		winnerLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
+		winnerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		winnerLabel.setBounds(448, 145, 212, 15);
+		winnerLabel.setName(WINNER_LABEL);
+		getContentPane().add(winnerLabel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 230, 760, 325);
+		getContentPane().add(scrollPane);
+		
+		scrollPane.setViewportView(bidderTable);
+		
+		statusLabel = new JLabel("Not Started");
+		statusLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		statusLabel.setBounds(448, 75, 324, 15);
+		statusLabel.setName(AUCTION_STATUS);
+		getContentPane().add(statusLabel);
+		
+		lblWinner = new JLabel("Winner");
+		lblWinner.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblWinner.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
+		lblWinner.setBounds(448, 120, 212, 15);
+		getContentPane().add(lblWinner);
 	}
 
-	private static JLabel priceLabel() {
-		JLabel label = new JLabel();
-		label.setName(MainWindow.AUCTION_PRICE);
-		label.setText("0");
-		return label;
-	}
-
-	private static JLabel statusLabel() {
-		JLabel label = new JLabel();
-		label.setName(MainWindow.AUCTION_STATUS);
-		label.setText("Not Started");
-		return label;
-	}
-
-	private static JEditorPane priceEditorPane(int defaultPrice) {
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setName(MainWindow.PRICE_EDIT);
-		editorPane.setText(String.valueOf(defaultPrice));
-		return editorPane;
-	}
-
-	private static JEditorPane incrementEditorPane(int defaultIncrement) {
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setName(MainWindow.INCREMENT_EDIT);
-		editorPane.setText(String.valueOf(defaultIncrement));
-		return editorPane;
-	}
-
-	private static JButton startButton() {
-		JButton button = new JButton();
-		button.setName(MainWindow.START_BUTTON);
-		button.setText("Start");
-		return button;
-	}
-
-	private static JButton closeButton() {
-		JButton button = new JButton();
-		button.setName(MainWindow.CLOSE_BUTTON);
-		button.setText("Close");
-		return button;
-	}
-
-	private JLabel winnerLabel() {
-		JLabel label = new JLabel();
-		label.setName(MainWindow.WINNER_LABEL);
-		label.setText("");
-		return label;
-	}
-	
 	@Override
 	public void setStatus(String status, String winner, int price) {
 		statusLabel.setText(status);
