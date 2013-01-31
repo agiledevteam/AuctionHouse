@@ -110,6 +110,25 @@ public class AuctionHouseEndtoEndTest {
 		bidder2.receivedClosedMessage();
 	}
 	
+	@Test
+	public void duplicatedJoinIgnoreFirstJoin() throws Exception {
+		app.startAuction();
+		app.showsStarted();
+
+		FakeBidder dupBidder1 = new FakeBidder("bidder-1");
+		FakeBidder dupBidder2 = new FakeBidder("bidder-1");
+
+		dupBidder1.join();
+		dupBidder1.receivedPriceMessage(1000, 50, "Broker");
+		dupBidder2.join();
+		dupBidder2.receivedPriceMessage(1000, 50, "Broker");
+
+		app.closeAuction();
+//		dupBidder1.receivedClosedMessage();
+		dupBidder2.receivedClosedMessage();
+	}
+
+	
 	@After
 	public void stopAuction() {
 		bidder1.stop();
