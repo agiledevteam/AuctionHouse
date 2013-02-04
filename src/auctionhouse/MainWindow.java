@@ -66,9 +66,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String host = hostField.getText();
+				int startPrice = Integer.valueOf(startPriceField.getText());
+				int increment = Integer.valueOf(incrementField.getText());
 				listener.openAuction(host, 5222,
-						"auction-item-54321", "auction");
-				setStatus("Started", "Broker", 1000);
+						"auction-item-54321", "auction", startPrice, increment);
+				setStatus("Started", "Broker", startPrice);
 			}
 		});
 		stopButton.addActionListener(new ActionListener() {
