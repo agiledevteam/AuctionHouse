@@ -38,6 +38,11 @@ public class AuctionBroker implements AuctionCommandHandler {
 		this.listener = listener;
 	}
 
+	public void setStartPrice(int startPrice, int increment) {
+		this.currentPrice = startPrice;
+		this.increment = increment;
+	}
+	
 	public void sendClose() {
 		auctionList.sendClose();
 	}

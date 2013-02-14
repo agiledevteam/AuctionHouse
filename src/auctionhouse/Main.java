@@ -44,7 +44,8 @@ public class Main implements UserActionListener {
 	}
 
 	@Override
-	public void openAuction(String serverAddress, int port, String itemId, String passwd) {
+	public void openAuction(String serverAddress, int port, String itemId, String passwd, int startPrice, int increment) {
+		broker.setStartPrice(startPrice, increment);
 		ConnectionConfiguration config = new ConnectionConfiguration(
 				serverAddress, port);
 		XMPPConnection connection = new XMPPConnection(config);
@@ -67,7 +68,7 @@ public class Main implements UserActionListener {
 		this.disconnectWhenUICloses(connection);
 	}
 
-	protected String idFrom(String jid) {
+	public static String idFrom(String jid) {
 		return jid.split("@")[0];
 	}
 
