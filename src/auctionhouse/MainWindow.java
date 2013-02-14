@@ -99,7 +99,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private void fillContentPane() {
 		getContentPane().setLayout(null);
 		JLabel lblHost = new JLabel("Host:");
-		lblHost.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblHost.setBounds(10, 13, 104, 15);
 		getContentPane().add(lblHost);
 
@@ -114,7 +113,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(startButton);
 
 		JLabel lblStartPrice = new JLabel("Start Price:");
-		lblStartPrice.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblStartPrice.setBounds(10, 44, 104, 15);
 		getContentPane().add(lblStartPrice);
 
@@ -130,7 +128,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(stopButton);
 
 		JLabel lblIncrement = new JLabel("Increment:");
-		lblIncrement.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblIncrement.setBounds(10, 75, 104, 15);
 		getContentPane().add(lblIncrement);
 
@@ -153,7 +150,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 		JLabel lblNewLabel = new JLabel("임베디드 C를 위한 TDD");
 		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+		lblNewLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 		lblNewLabel.setBounds(120, 120, 316, 100);
 		getContentPane().add(lblNewLabel);
 
@@ -171,13 +168,13 @@ public class MainWindow extends JFrame implements BrokerListener {
 		priceLabel = new JLabel("0");
 		priceLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		priceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		priceLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
+		priceLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 32));
 		priceLabel.setBounds(448, 170, 212, 50);
 		priceLabel.setName(MainWindow.AUCTION_PRICE);
 		getContentPane().add(priceLabel);
 
 		winnerLabel = new JLabel("winnerId");
-		winnerLabel.setFont(new Font("Trebuchet MS", Font.BOLD, 16));
+		winnerLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 		winnerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		winnerLabel.setBounds(448, 145, 212, 15);
 		winnerLabel.setName(WINNER_LABEL);
@@ -197,7 +194,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 		lblWinner = new JLabel("Winner");
 		lblWinner.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblWinner.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblWinner.setBounds(448, 120, 212, 15);
 		getContentPane().add(lblWinner);
 	}
