@@ -1,6 +1,7 @@
 package auctionhouse;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -53,6 +54,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private JLabel winnerLabel;
 	private JLabel statusLabel;
 	private JLabel lblWinner;
+
+	private JLabel winnerPictureLabel;
 
 	public MainWindow(final UserActionListener listener) {
 		super("Auction House");
@@ -156,14 +159,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		lblNewLabel.setBounds(120, 120, 316, 100);
 		getContentPane().add(lblNewLabel);
 
-		BufferedImage winnerPicture;
-		JLabel winnerPictureLabel;
-		try {
-			winnerPicture = ImageIO.read(new File("images/avatars/frog.jpg"));
-			winnerPictureLabel = new JLabel(new ImageIcon(winnerPicture));
-		} catch (IOException e) {
-			winnerPictureLabel = new JLabel("N/A");
-		}
+		winnerPictureLabel = new JLabel("N/A");
 		winnerPictureLabel.setBounds(672, 120, 100, 100);
 		getContentPane().add(winnerPictureLabel);
 
@@ -202,6 +198,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	@Override
 	public void setStatus(String status, String winner, int price) {
+		winnerPictureLabel.setIcon(Avatar.getIcon(winner));
 		statusLabel.setText(status);
 		winnerLabel.setText(winner);
 		priceLabel.setText(String.valueOf(price));

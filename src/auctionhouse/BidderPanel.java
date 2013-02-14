@@ -35,7 +35,7 @@ public class BidderPanel extends JPanel {
 		detailLabel.setBounds(92, 35, 146, 19);
 		detailLabel.setText(value.status);
 		
-		JLabel imageLabel = Avatar.get(value.bidderId);
+		JLabel imageLabel = Avatar.getLabel(value.bidderId);
 		imageLabel.setVerticalAlignment(SwingConstants.TOP);
 		imageLabel.setBounds(0, 0, 80, 80);
 		setPreferredSize(new Dimension(250, 80));
