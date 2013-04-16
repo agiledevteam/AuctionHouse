@@ -2,6 +2,8 @@ package auctionhouse;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
 
@@ -19,6 +21,7 @@ public class Main implements UserActionListener {
 
 	private MainWindow ui;
 	private AuctionBroker broker;
+	private int bidderCount;
 
 	public Main(final boolean testMode) throws Exception {
 
@@ -50,7 +53,8 @@ public class Main implements UserActionListener {
 	}
 
 	@Override
-	public void openAuction(String serverAddress, int port, String itemId, String passwd, int startPrice, int increment) {
+	public void openAuction(String serverAddress, int port, String itemId,
+			String passwd, int startPrice, int increment) {
 		broker.setStartPrice(startPrice, increment);
 		ConnectionConfiguration config = new ConnectionConfiguration(
 				serverAddress, port);
@@ -66,8 +70,8 @@ public class Main implements UserActionListener {
 			public void chatCreated(Chat chat, boolean arg1) {
 				String bidderId = idFrom(chat.getParticipant());
 				XMPPAuction auction = new XMPPAuction(chat);
-				chat.addMessageListener(new AuctionCommandTranslator(
-						broker, auction));
+				chat.addMessageListener(new AuctionCommandTranslator(broker,
+						auction));
 			}
 		});
 
@@ -81,6 +85,45 @@ public class Main implements UserActionListener {
 	@Override
 	public void closeAuction() {
 		broker.sendClose();
+	}
+
+	@Override
+	public void addFakeBidder() {
+		final String bidderId = nextFakeBidderId();
+		broker.onJoin(bidderId, new Auction() {
+			Timer timer = new Timer();
+			TimerTask task;
+
+			@Override
+			public void currentPrice(int currentPrice, int increment,
+					String bidder) {
+				final int bid = currentPrice + increment;
+				if (task != null) {
+					task.cancel();
+				}
+				if (bidder.equals(bidderId))
+					return;
+				task = new TimerTask() {
+					@Override
+					public void run() {
+						broker.onBid(bidderId, bid);
+					}
+				};
+				timer.schedule(task, 1000);
+			}
+
+			@Override
+			public void auctionClosed() {
+				if (task != null) {
+					task.cancel();
+				}
+			}
+		});
+	}
+
+	private String nextFakeBidderId() {
+		bidderCount++;
+		return String.format("bidder-%d", bidderCount);
 	}
 
 }

@@ -63,10 +63,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private JButton addButton;
 
-	private int bidderCount;
-
-	private List<FakeBidder> fakeBidders = new ArrayList<FakeBidder>();
-
 	private boolean testMode;
 
 	public MainWindow(final UserActionListener listener, boolean testMode) {
@@ -101,21 +97,10 @@ public class MainWindow extends JFrame implements BrokerListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				addFakeBidder();
+				listener.addFakeBidder();
 			}
 		});
 		setVisible(true);
-	}
-
-	protected void addFakeBidder() {
-		String host = hostField.getText();
-		String bidderId = nextFakeBidderId();
-		fakeBidders.add(new FakeBidder(host, bidderId));
-	}
-
-	private String nextFakeBidderId() {
-		bidderCount++;
-		return String.format("bidder-%d", bidderCount);
 	}
 
 	private JTable bidderTable() {

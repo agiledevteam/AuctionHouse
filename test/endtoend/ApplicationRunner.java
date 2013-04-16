@@ -61,4 +61,5 @@ public class ApplicationRunner {
 	public void addFakeBidder() {
 		driver.clickAddFake();
 	}
+
 }
