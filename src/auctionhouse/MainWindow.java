@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -44,6 +46,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String BIDDER_TABLE = "BidderTable";
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
+
+	public static final String ADD_BUTTON = "AddButton";
 	private JTextField startPriceField;
 	private JTextField hostField;
 	private JTextField incrementField;
@@ -57,7 +61,13 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private JLabel winnerPictureLabel;
 
-	public MainWindow(final UserActionListener listener) {
+	private JButton addButton;
+
+	private int bidderCount;
+
+	private List<FakeBidder> fakeBidders = new ArrayList<FakeBidder>();
+
+	public MainWindow(final UserActionListener listener, boolean testMode) {
 		super("Auction House");
 		setName(MainWindow.AUCTION_HOUSE);
 		fillContentPane();
@@ -84,7 +94,25 @@ public class MainWindow extends JFrame implements BrokerListener {
 				setStatus("Closed", "", 0);
 			}
 		});
+		addButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addFakeBidder();
+			}
+		});
 		setVisible(true);
+	}
+
+	protected void addFakeBidder() {
+		String host = hostField.getText();
+		String bidderId = nextFakeBidderId();
+		fakeBidders.add(new FakeBidder(host, bidderId));
+	}
+
+	private String nextFakeBidderId() {
+		bidderCount++;
+		return String.format("bidder-%d", bidderCount);
 	}
 
 	private JTable bidderTable() {
@@ -132,6 +160,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 		stopButton.setName(CLOSE_BUTTON);
 		getContentPane().add(stopButton);
 
+		addButton = new JButton("Add Fake");
+		addButton.setBounds(668, 71, 104, 23);
+		addButton.setName(ADD_BUTTON);
+		getContentPane().add(addButton);
+		
 		JLabel lblIncrement = new JLabel("Increment:");
 		lblIncrement.setBounds(10, 75, 104, 15);
 		getContentPane().add(lblIncrement);

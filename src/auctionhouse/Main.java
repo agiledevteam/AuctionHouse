@@ -20,19 +20,25 @@ public class Main implements UserActionListener {
 	private MainWindow ui;
 	private AuctionBroker broker;
 
-	public Main() throws Exception {
+	public Main(final boolean testMode) throws Exception {
 
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
-				ui = new MainWindow(Main.this);
+				ui = new MainWindow(Main.this, testMode);
 				broker = new AuctionBroker(ui);
 			}
 		});
 	}
 
 	public static void main(String... args) throws Exception {
-		new Main();
+		boolean testMode = false;
+		for (String arg : args) {
+			if (arg.equals("-test")) {
+				testMode = true;
+			}
+		}
+		new Main(testMode);
 	}
 
 	private void disconnectWhenUICloses(final XMPPConnection connection) {

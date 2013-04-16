@@ -1,14 +1,10 @@
 package endtoend;
 
-import static com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText;
 import static org.hamcrest.Matchers.equalTo;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import auctionhouse.BidderPanel;
@@ -88,5 +84,10 @@ public class ApplicationDriver extends JFrameDriver {
 	public void showsWinnerIs(String id) {
 		new JLabelDriver(this, named(MainWindow.WINNER_LABEL))
 				.hasText(equalTo(id));
+	}
+
+	public void clickAddFake() {
+		new JButtonDriver(this, JButton.class, named(MainWindow.ADD_BUTTON))
+				.click();
 	}
 }

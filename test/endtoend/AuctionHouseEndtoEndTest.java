@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Test;
 
 public class AuctionHouseEndtoEndTest {
+	private static final String BIDDER_1 = "bidder-1";
 
 	ApplicationRunner app = new ApplicationRunner();
 	FakeBidder bidder1 = new FakeBidder("bidder-1");
@@ -126,6 +127,20 @@ public class AuctionHouseEndtoEndTest {
 		app.closeAuction();
 //		dupBidder1.receivedClosedMessage();
 		dupBidder2.receivedClosedMessage();
+	}
+	
+	@Test
+	public void addFakeBidderAndItJoins() throws Exception {
+		app.startTestMode();
+		app.showsStarted();
+		app.addFakeBidder();
+		app.showBidderJoined("bidder-1");
+	}
+
+	@Test
+	public void testModeShowsFakeBidderController() throws Exception {
+		app.startTestMode();
+		app.showsStarted();
 	}
 
 	

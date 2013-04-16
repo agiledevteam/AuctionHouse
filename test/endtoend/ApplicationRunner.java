@@ -7,11 +7,15 @@ public class ApplicationRunner {
 	private ApplicationDriver driver;
 
 	public void startAuction() {
+		startMain(new String[]{});
+	}
+
+	private void startMain(final String[] args ) {
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					Main.main("localhost", "5222", "item-54321", "auction");
+					Main.main(args);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,5 +52,13 @@ public class ApplicationRunner {
 		if (driver != null) {
 			driver.dispose();
 		}
+	}
+
+	public void startTestMode() {
+		startMain(new String[]{"-test"});
+	}
+
+	public void addFakeBidder() {
+		driver.clickAddFake();
 	}
 }
