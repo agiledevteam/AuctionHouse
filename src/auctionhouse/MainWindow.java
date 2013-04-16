@@ -164,14 +164,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		hostField.setBounds(120, 10, 316, 21);
 		getContentPane().add(hostField);
 
-		BufferedImage myPicture;
-		try {
-			myPicture = ImageIO.read(new File("photo.jpg"));
-			itemImageLabel = new JLabel(new ImageIcon(myPicture));
-		} catch (IOException e) {
-			itemImageLabel = new JLabel("Image N/A");
-		}
-
+		itemImageLabel = new JLabel(Avatar.getIconLarge("photo"));
 		itemImageLabel.setBackground(new Color(255, 0, 0));
 		itemImageLabel.setBounds(12, 120, 102, 100);
 		getContentPane().add(itemImageLabel);
@@ -221,7 +214,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	@Override
 	public void setStatus(String status, String winner, int price) {
-		winnerPictureLabel.setIcon(Avatar.getIcon(winner));
+		winnerPictureLabel.setIcon(Avatar.getIconLarge(winner));
 		statusLabel.setText(status);
 		winnerLabel.setText(winner);
 		priceLabel.setText(String.valueOf(price));
