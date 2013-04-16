@@ -67,8 +67,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	private List<FakeBidder> fakeBidders = new ArrayList<FakeBidder>();
 
+	private boolean testMode;
+
 	public MainWindow(final UserActionListener listener, boolean testMode) {
 		super("Auction House");
+		this.testMode = testMode;
 		setName(MainWindow.AUCTION_HOUSE);
 		fillContentPane();
 		pack();
@@ -163,7 +166,9 @@ public class MainWindow extends JFrame implements BrokerListener {
 		addButton = new JButton("Add Fake");
 		addButton.setBounds(668, 71, 104, 23);
 		addButton.setName(ADD_BUTTON);
-		getContentPane().add(addButton);
+		if (testMode) {
+			getContentPane().add(addButton);
+		}
 		
 		JLabel lblIncrement = new JLabel("Increment:");
 		lblIncrement.setBounds(10, 75, 104, 15);
