@@ -14,7 +14,7 @@ public class XMPPAuction implements Auction {
 	}
 
 	@Override
-	public void sendPrice(int currentPrice, int increment, String bidder) {
+	public void currentPrice(int currentPrice, int increment, String bidder) {
 		Logger.getLogger("han").info(
 				String.format("XMPPAuction.sendPrice(%d,%d,%s)", currentPrice,
 						increment, bidder));
@@ -23,7 +23,7 @@ public class XMPPAuction implements Auction {
 	}
 
 	@Override
-	public void closeAuction() {
+	public void auctionClosed() {
 		sendMessage(Main.CLOSE_EVENT_FORMAT);
 	}
 

@@ -18,13 +18,13 @@ public class AuctionBroker implements AuctionCommandHandler {
 					String.format("AuctionBucket.sendPrice(%d,%d,%s)",
 							currentPrice, increment, winner));
 			for (Auction auction : auctions.values()) {
-				auction.sendPrice(currentPrice, increment, winner);
+				auction.currentPrice(currentPrice, increment, winner);
 			}
 		}
 
 		public void sendClose() {
 			for (Auction auction : auctions.values()) {
-				auction.closeAuction();
+				auction.auctionClosed();
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public class AuctionBroker implements AuctionCommandHandler {
 	@Override
 	public void onJoin(String bidderId, Auction auction) {
 		auctionList.add(bidderId, auction);
-		auction.sendPrice(currentPrice, increment, winner);
+		auction.currentPrice(currentPrice, increment, winner);
 		listener.setStatus("Joined", winner, currentPrice);
 		listener.bidderAdded(new BidderSnapshot(bidderId, "Joined"));
 	}

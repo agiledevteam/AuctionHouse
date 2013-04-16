@@ -42,11 +42,11 @@ public class AuctionBrokerTest {
 		context.checking(new Expectations() {
 			{
 				ignoring(listener);
-				allowing(auction1).sendPrice(with(any(int.class)),
+				allowing(auction1).currentPrice(with(any(int.class)),
 						with(any(int.class)), with(any(String.class)));
-				never(auction1).closeAuction();
-				one(auction2).sendPrice(1000, 50, "Broker");
-				one(auction2).closeAuction();
+				never(auction1).auctionClosed();
+				one(auction2).currentPrice(1000, 50, "Broker");
+				one(auction2).auctionClosed();
 			}
 		});
 
