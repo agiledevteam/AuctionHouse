@@ -90,7 +90,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listener.closeAuction();
-				setStatus("Closed", "", 0);
 			}
 		});
 		addButton.addActionListener(new ActionListener() {

@@ -14,6 +14,37 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 
 public class Main implements UserActionListener {
+	private final static class AuctionImplementation implements Auction {
+		private final String bidderId;
+		static Timer timer;
+		static {
+			timer = new Timer();
+		}
+		private AuctionBroker broker;
+
+		private AuctionImplementation(String bidderId, AuctionBroker broker) {
+			this.bidderId = bidderId;
+			this.broker = broker;
+		}
+
+		@Override
+		public void currentPrice(int currentPrice, int increment, String bidder) {
+			if (bidder.equals(bidderId))
+				return;
+			final int bid = currentPrice + increment;
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					broker.onBid(bidderId, bid);
+				}
+			}, 1000);
+		}
+
+		@Override
+		public void auctionClosed() {
+		}
+	}
+
 	public static final String JOIN_COMMAND_FORMAT = "SOLVersion: 1.1; Command: JOIN;";
 	public static final String BID_COMMAND_FORMAT = "SOLVersion: 1.1; Command: BID; Price: %d;";
 	public static final String PRICE_EVENT_FORMAT = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
@@ -90,35 +121,7 @@ public class Main implements UserActionListener {
 	@Override
 	public void addFakeBidder() {
 		final String bidderId = nextFakeBidderId();
-		broker.onJoin(bidderId, new Auction() {
-			Timer timer = new Timer();
-			TimerTask task;
-
-			@Override
-			public void currentPrice(int currentPrice, int increment,
-					String bidder) {
-				final int bid = currentPrice + increment;
-				if (task != null) {
-					task.cancel();
-				}
-				if (bidder.equals(bidderId))
-					return;
-				task = new TimerTask() {
-					@Override
-					public void run() {
-						broker.onBid(bidderId, bid);
-					}
-				};
-				timer.schedule(task, 1000);
-			}
-
-			@Override
-			public void auctionClosed() {
-				if (task != null) {
-					task.cancel();
-				}
-			}
-		});
+		broker.onJoin(bidderId, new AuctionImplementation(bidderId, broker));
 	}
 
 	private String nextFakeBidderId() {

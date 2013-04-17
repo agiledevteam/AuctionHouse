@@ -36,6 +36,8 @@ public class AuctionBroker implements AuctionCommandHandler {
 	private int increment = 50;
 	private BrokerListener listener;
 
+	private boolean isClosed = false;
+
 	public AuctionBroker(BrokerListener listener) {
 		this.listener = listener;
 	}
@@ -47,6 +49,8 @@ public class AuctionBroker implements AuctionCommandHandler {
 
 	public void sendClose() {
 		auctionList.sendClose();
+		isClosed  = true;
+		listener.setStatus("Closed", winner, currentPrice);
 	}
 
 	@Override
@@ -59,13 +63,17 @@ public class AuctionBroker implements AuctionCommandHandler {
 
 	@Override
 	public void onBid(String bidderId, int price) {
+		if (isClosed) {
+			return;
+		}
+		if (price <= currentPrice) {
+			return;
+		}
 		Logger.getLogger("AuctionBroker").info(
 				Thread.currentThread().getId() + ") updateBid: " + price + ", "
 						+ bidderId);
-		if (currentPrice < price) {
-			this.currentPrice = price;
-			this.winner = bidderId;
-		}
+		this.currentPrice = price;
+		this.winner = bidderId;
 
 		auctionList.sendPrice(currentPrice, increment, winner);
 		listener.setStatus("Bidding", winner, price);
