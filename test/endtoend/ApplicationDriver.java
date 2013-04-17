@@ -3,6 +3,7 @@ package endtoend;
 import static org.hamcrest.Matchers.equalTo;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
@@ -15,6 +16,7 @@ import com.objogate.wl.swing.driver.JButtonDriver;
 import com.objogate.wl.swing.driver.JFrameDriver;
 import com.objogate.wl.swing.driver.JLabelDriver;
 import com.objogate.wl.swing.driver.JTableDriver;
+import com.objogate.wl.swing.driver.JTextFieldDriver;
 import com.objogate.wl.swing.gesture.GesturePerformer;
 
 public class ApplicationDriver extends JFrameDriver {
@@ -89,5 +91,14 @@ public class ApplicationDriver extends JFrameDriver {
 	public void clickAddFake() {
 		new JButtonDriver(this, JButton.class, named(MainWindow.ADD_BUTTON))
 				.click();
+	}
+
+	public void setIncrement(int increment) {
+		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
+				named(MainWindow.FIELD_INCREMENT));
+		textField.focusWithMouse();
+		textField.replaceAllText(String
+				.valueOf(increment));
+
 	}
 }

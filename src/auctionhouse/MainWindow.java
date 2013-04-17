@@ -40,7 +40,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	public static final String AUCTION_PRICE = "AuctionPrice";
 	public static final String AUCTION_STATUS = "AuctionStatus";
-	public static final String AUCTION_HOUSE = "AuctionHouse";
+	public static final String AUCTION_HOUSE = "AuctionHouseMainWindow";
 	public static final String AUCTION_LOG = "AuctionLog";
 	public static final String WINNER_LABEL = "WinnerLabel";
 	public static final String BIDDER_TABLE = "BidderTable";
@@ -48,6 +48,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
 
 	public static final String ADD_BUTTON = "AddButton";
+
+	public static final String FIELD_INCREMENT = "FieldIncrement";
 	private JTextField startPriceField;
 	private JTextField hostField;
 	private JTextField incrementField;
@@ -123,6 +125,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(lblHost);
 
 		incrementField = new JTextField();
+		incrementField.setName(FIELD_INCREMENT);
 		incrementField.setText("100");
 		incrementField.setBounds(120, 72, 316, 21);
 		getContentPane().add(incrementField);

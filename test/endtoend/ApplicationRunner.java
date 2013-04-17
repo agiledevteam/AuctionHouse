@@ -25,6 +25,7 @@ public class ApplicationRunner {
 		thread.setDaemon(true);
 		thread.start();
 		driver = new ApplicationDriver();
+		driver.setIncrement(50);
 		driver.clickStartButton();
 	}
 

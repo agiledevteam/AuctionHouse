@@ -99,9 +99,6 @@ public class AuctionHouseEndtoEndTest {
 		app.showBidderBidding(bidder2.getId(), 1050);
 
 		bidder1.receivedPriceMessage(1100, 50, bidder1.getId());
-		bidder1.receivedPriceMessage(1100, 50, bidder1.getId());
-
-		bidder2.receivedPriceMessage(1100, 50, bidder1.getId());
 		bidder2.receivedPriceMessage(1100, 50, bidder1.getId());
 		
 		app.showsWinnerIs(bidder1.getId());
