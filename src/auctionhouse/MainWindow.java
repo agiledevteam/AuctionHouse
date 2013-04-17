@@ -46,10 +46,9 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String BIDDER_TABLE = "BidderTable";
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
-
 	public static final String ADD_BUTTON = "AddButton";
-
 	public static final String FIELD_INCREMENT = "FieldIncrement";
+	public static final String FIELD_HOST = "FieldHost";
 	private JTextField startPriceField;
 	private JTextField hostField;
 	private JTextField incrementField;
@@ -85,7 +84,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 				int increment = Integer.valueOf(incrementField.getText());
 				listener.openAuction(host, 5222,
 						"auction-item-54321", "auction", startPrice, increment);
-				setStatus("Started", "Broker", startPrice);
 			}
 		});
 		stopButton.addActionListener(new ActionListener() {
@@ -162,6 +160,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(lblIncrement);
 
 		hostField = new JTextField();
+		hostField.setName(FIELD_HOST);
 		hostField.setText("localhost");
 		hostField.setBounds(120, 10, 316, 21);
 		getContentPane().add(hostField);

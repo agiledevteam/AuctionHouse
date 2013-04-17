@@ -95,16 +95,18 @@ public class Main implements UserActionListener {
 			connection.login(itemId, passwd);
 		} catch (XMPPException e) {
 			e.printStackTrace();
+			ui.setStatus("Server not ready", "", 0);
+			return;
 		}
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean arg1) {
-				String bidderId = idFrom(chat.getParticipant());
 				XMPPAuction auction = new XMPPAuction(chat);
 				chat.addMessageListener(new AuctionCommandTranslator(broker,
 						auction));
 			}
 		});
+		ui.setStatus("Started", "Broker", startPrice);
 
 		this.disconnectWhenUICloses(connection);
 	}

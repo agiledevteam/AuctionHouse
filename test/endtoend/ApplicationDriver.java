@@ -99,6 +99,12 @@ public class ApplicationDriver extends JFrameDriver {
 		textField.focusWithMouse();
 		textField.replaceAllText(String
 				.valueOf(increment));
+	}
 
+	public void setHost(String host) {
+		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
+				named(MainWindow.FIELD_HOST));
+		textField.focusWithMouse();
+		textField.replaceAllText(host);	
 	}
 }

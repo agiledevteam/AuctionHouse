@@ -8,6 +8,16 @@ public class ApplicationRunner {
 
 	public void startAuction() {
 		startMain(new String[]{});
+		driver = new ApplicationDriver();
+		driver.setIncrement(50);
+		driver.clickStartButton();
+	}
+
+	public void startWithHost(String host) {
+		startMain(new String[]{});
+		driver = new ApplicationDriver();
+		driver.setHost(host);
+		driver.clickStartButton();	
 	}
 
 	private void startMain(final String[] args ) {
@@ -24,13 +34,14 @@ public class ApplicationRunner {
 		});
 		thread.setDaemon(true);
 		thread.start();
-		driver = new ApplicationDriver();
-		driver.setIncrement(50);
-		driver.clickStartButton();
 	}
 
 	public void showsStarted() {
 		driver.showsStatus("Started");
+	}
+
+	public void showsServerNotReady() {
+		driver.showsStatus("Server not ready");
 	}
 
 	public void showBidderJoined(String bidderId) {
@@ -57,6 +68,8 @@ public class ApplicationRunner {
 
 	public void startTestMode() {
 		startMain(new String[]{"-test"});
+		driver = new ApplicationDriver();
+		driver.clickStartButton();
 	}
 
 	public void addFakeBidder() {

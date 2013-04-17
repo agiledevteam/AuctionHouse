@@ -139,14 +139,18 @@ public class AuctionHouseEndtoEndTest {
 		app.startTestMode();
 		app.showsStarted();
 	}
-
+	
+	@Test
+	public void serverError() throws Exception {
+		app.startWithHost("invalidhost.");
+		app.showsServerNotReady();
+	}
 	
 	@After
 	public void stopAuction() {
 		bidder1.stop();
 		bidder2.stop();
 	}
-	
 	
 	@After
 	public void stopApplication() {
