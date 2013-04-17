@@ -13,7 +13,6 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Avatar {
 	static HashMap<String, BufferedImage> imageCache = new HashMap<String, BufferedImage>();

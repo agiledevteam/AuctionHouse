@@ -95,7 +95,7 @@ public class ApplicationDriver extends JFrameDriver {
 
 	public void setIncrement(int increment) {
 		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
-				named(MainWindow.FIELD_INCREMENT));
+				named(MainWindow.INCREMENT_EDIT));
 		textField.focusWithMouse();
 		textField.replaceAllText(String
 				.valueOf(increment));
@@ -103,7 +103,7 @@ public class ApplicationDriver extends JFrameDriver {
 
 	public void setHost(String host) {
 		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
-				named(MainWindow.FIELD_HOST));
+				named(MainWindow.HOST_EDIT));
 		textField.focusWithMouse();
 		textField.replaceAllText(host);	
 	}

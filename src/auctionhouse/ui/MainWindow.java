@@ -1,24 +1,14 @@
 package auctionhouse.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -40,7 +30,8 @@ public class MainWindow extends JFrame implements BrokerListener {
 	public static final String START_BUTTON = "StartButton";
 	public static final String CLOSE_BUTTON = "CloseButton";
 	private static final String PRICE_EDIT = "AuctionPrice";
-	private static final String INCREMENT_EDIT = "AuctionIncrement";
+	public static final String INCREMENT_EDIT = "FieldIncrement";
+	public static final String HOST_EDIT = "FieldHost";
 
 	public static final String AUCTION_PRICE = "AuctionPrice";
 	public static final String AUCTION_STATUS = "AuctionStatus";
@@ -51,8 +42,6 @@ public class MainWindow extends JFrame implements BrokerListener {
 
 	public static final String AUCTION_LOG_FORMAT = "%s is %s at %d\n";
 	public static final String ADD_BUTTON = "AddButton";
-	public static final String FIELD_INCREMENT = "FieldIncrement";
-	public static final String FIELD_HOST = "FieldHost";
 	private JTextField startPriceField;
 	private JTextField hostField;
 	private JTextField incrementField;
@@ -109,6 +98,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 	private JTable bidderTable() {
 		final BidderRenderer renderer = new BidderRenderer();
 		JTable table = new JTable() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8695477405858755029L;
+
 			@Override
 			public TableCellRenderer getCellRenderer(int row, int column) {
 				return renderer;
@@ -127,7 +121,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(lblHost);
 
 		incrementField = new JTextField();
-		incrementField.setName(FIELD_INCREMENT);
+		incrementField.setName(INCREMENT_EDIT);
 		incrementField.setText("100");
 		incrementField.setBounds(120, 72, 316, 21);
 		getContentPane().add(incrementField);
@@ -138,10 +132,12 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(startButton);
 
 		JLabel lblStartPrice = new JLabel("Start Price:");
+
 		lblStartPrice.setBounds(10, 44, 104, 15);
 		getContentPane().add(lblStartPrice);
 
 		startPriceField = new JTextField();
+		startPriceField.setName(PRICE_EDIT);
 		startPriceField.setText("1000");
 		startPriceField.setBounds(120, 41, 316, 21);
 		getContentPane().add(startPriceField);
@@ -164,7 +160,7 @@ public class MainWindow extends JFrame implements BrokerListener {
 		getContentPane().add(lblIncrement);
 
 		hostField = new JTextField();
-		hostField.setName(FIELD_HOST);
+		hostField.setName(HOST_EDIT);
 		hostField.setText("localhost");
 		hostField.setBounds(120, 10, 316, 21);
 		getContentPane().add(hostField);
