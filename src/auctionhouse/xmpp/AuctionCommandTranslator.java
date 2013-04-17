@@ -1,10 +1,13 @@
-package auctionhouse;
+package auctionhouse.xmpp;
 
 import java.util.HashMap;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
+
+import auctionhouse.Auction;
+import auctionhouse.AuctionCommandHandler;
 
 public class AuctionCommandTranslator implements MessageListener {
 

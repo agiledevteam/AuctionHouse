@@ -6,13 +6,29 @@ import org.junit.Test;
 
 import auctionhouse.Auction;
 import auctionhouse.AuctionBroker;
+import auctionhouse.AuctionHouse;
+import auctionhouse.AuctionStartError;
 import auctionhouse.BidderSnapshot;
 import auctionhouse.BrokerListener;
 
 public class AuctionBrokerTest {
 	private final Mockery context = new Mockery();
 	private final BrokerListener listener = context.mock(BrokerListener.class);
+	private final AuctionHouse auctionHouse = context.mock(AuctionHouse.class);
 	private final AuctionBroker broker = new AuctionBroker(listener);
+	
+	@Test
+	public void registerAsAuctionCommandHandlerOnStart() throws Exception {
+		context.checking(new Expectations() {
+			{
+				ignoring(listener);
+				oneOf(auctionHouse).start(broker);
+			}
+		});
+		broker.startAuction(auctionHouse);
+		context.assertIsSatisfied();
+	}
+
 
 	@Test
 	public void updateBidIfItIsHigherThanPrevious() {

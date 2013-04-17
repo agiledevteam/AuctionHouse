@@ -6,12 +6,11 @@ public class AuctionBroker implements AuctionCommandHandler {
 
 	AuctionList auctionList = new AuctionList();
 
+	private final BrokerListener listener;
+	private boolean isClosed = false;
 	private String winner = "Broker";
 	private int currentPrice = 1000;
 	private int increment = 50;
-	private BrokerListener listener;
-
-	private boolean isClosed = false;
 
 	public AuctionBroker(BrokerListener listener) {
 		this.listener = listener;
@@ -39,8 +38,8 @@ public class AuctionBroker implements AuctionCommandHandler {
 	@Override
 	synchronized public void onBid(String bidderId, int price) {
 		Logger.getLogger("AuctionBroker").info(
-				Thread.currentThread().getId() + ") onBid: " + price
-				+ ", " + bidderId);
+				Thread.currentThread().getId() + ") onBid: " + price + ", "
+						+ bidderId);
 		if (isClosed) {
 			return;
 		}
@@ -53,5 +52,14 @@ public class AuctionBroker implements AuctionCommandHandler {
 		}
 		listener.bidderChanged(new BidderSnapshot(bidderId, Integer
 				.toString(price)));
+	}
+
+	public void startAuction(AuctionHouse auctionHouse) {
+		try {
+			auctionHouse.start(this);
+			listener.setStatus("Started", "", 0);
+		} catch (AuctionStartError e) {
+			listener.setStatus("Server not ready", "", 0);
+		}
 	}
 }

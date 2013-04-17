@@ -82,14 +82,14 @@ public class MainWindow extends JFrame implements BrokerListener {
 				String host = hostField.getText();
 				int startPrice = Integer.valueOf(startPriceField.getText());
 				int increment = Integer.valueOf(incrementField.getText());
-				listener.openAuction(host, 5222,
+				listener.startAuction(host, 5222,
 						"auction-item-54321", "auction", startPrice, increment);
 			}
 		});
 		stopButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.closeAuction();
+				listener.stopAuction();
 			}
 		});
 		addButton.addActionListener(new ActionListener() {

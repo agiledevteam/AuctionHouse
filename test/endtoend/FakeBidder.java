@@ -17,7 +17,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
-import auctionhouse.Main;
+import auctionhouse.xmpp.XMPPAuction;
 
 public class FakeBidder implements MessageListener {
 
@@ -39,7 +39,7 @@ public class FakeBidder implements MessageListener {
 
 		chat = connection.getChatManager().createChat(
 				"auction-item-54321@localhost", this);
-		chat.sendMessage(Main.JOIN_COMMAND_FORMAT);
+		chat.sendMessage(XMPPAuction.JOIN_COMMAND_FORMAT);
 	}
 
 	public void receivedClosedMessage() throws InterruptedException {
@@ -65,7 +65,7 @@ public class FakeBidder implements MessageListener {
 		Logger.getLogger("FakeBidder").info(
 				Thread.currentThread().getId() + ") bid" + getId() + ", "
 						+ price);
-		chat.sendMessage(String.format(Main.BID_COMMAND_FORMAT, price));
+		chat.sendMessage(String.format(XMPPAuction.BID_COMMAND_FORMAT, price));
 	}
 
 	public void stop() {
