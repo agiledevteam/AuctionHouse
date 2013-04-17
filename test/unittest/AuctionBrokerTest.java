@@ -1,41 +1,39 @@
 package unittest;
 
-import static org.junit.Assert.assertEquals;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
 import auctionhouse.Auction;
 import auctionhouse.AuctionBroker;
+import auctionhouse.BidderSnapshot;
 import auctionhouse.BrokerListener;
 
 public class AuctionBrokerTest {
 	private final Mockery context = new Mockery();
 	private final BrokerListener listener = context.mock(BrokerListener.class);
 	private final AuctionBroker broker = new AuctionBroker(listener);
-	
+
 	@Test
 	public void updateBidIfItIsHigherThanPrevious() {
+		final int winningPrice = 5000;
 		context.checking(new Expectations() {
 			{
-				ignoring(listener);
+				atLeast(1).of(listener).setStatus("Winner", "bidder-1",
+						winningPrice);
+				allowing(listener).bidderChanged(
+						with(any(BidderSnapshot.class)));
 			}
 		});
-
-		int winningPrice = 5000;
 
 		broker.onBid("bidder-1", winningPrice);
 		broker.onBid("bidder-2", winningPrice);
 
-		assertEquals("bidder-1", broker.getWinner());
-
 		context.assertIsSatisfied();
 	}
 
-
 	@Test
-	public void firstJoinIgnoredWhenDuplicatedJoin() {
+	public void firstJoinIgnoredWhenSecondJoinReceived() {
 		final Auction auction1 = context.mock(Auction.class, "bidder-1");
 		final Auction auction2 = context.mock(Auction.class, "bidder-2");
 
@@ -45,8 +43,8 @@ public class AuctionBrokerTest {
 				allowing(auction1).currentPrice(with(any(int.class)),
 						with(any(int.class)), with(any(String.class)));
 				never(auction1).auctionClosed();
-				one(auction2).currentPrice(1000, 50, "Broker");
-				one(auction2).auctionClosed();
+				oneOf(auction2).currentPrice(1000, 50, "Broker");
+				oneOf(auction2).auctionClosed();
 			}
 		});
 

@@ -74,13 +74,9 @@ public class AuctionBroker implements AuctionCommandHandler {
 			this.winner = bidderId;
 
 			auctionList.sendPrice(currentPrice, increment, winner);
-			listener.setStatus("Bidding", winner, price);
+			listener.setStatus("Winner", winner, price);
 		}
 		listener.bidderChanged(new BidderSnapshot(bidderId, Integer
 				.toString(price)));
-	}
-
-	public String getWinner() {
-		return winner;
 	}
 }
