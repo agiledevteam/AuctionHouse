@@ -1,4 +1,4 @@
-package auctionhouse;
+package auctionhouse.ui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -25,6 +25,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
+
+import auctionhouse.BidderSnapshot;
+import auctionhouse.BrokerListener;
+import auctionhouse.UserActionListener;
 
 public class MainWindow extends JFrame implements BrokerListener {
 

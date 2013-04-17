@@ -8,8 +8,8 @@ import javax.swing.JTextField;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-import auctionhouse.BidderPanel;
-import auctionhouse.MainWindow;
+import auctionhouse.ui.BidderPanel;
+import auctionhouse.ui.MainWindow;
 
 import com.objogate.wl.swing.AWTEventQueueProber;
 import com.objogate.wl.swing.driver.JButtonDriver;

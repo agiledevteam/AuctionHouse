@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.SwingUtilities;
 
+import auctionhouse.ui.MainWindow;
 import auctionhouse.xmpp.XMPPAuctionHouse;
 
 public class Main implements UserActionListener {
