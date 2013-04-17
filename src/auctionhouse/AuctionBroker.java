@@ -1,35 +1,10 @@
 package auctionhouse;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class AuctionBroker implements AuctionCommandHandler {
 
-	private static class AuctionBucket {
-		private Map<String, Auction> auctions = new HashMap<String, Auction>();
-
-		public void add(String bidderId, Auction newAuction) {
-			auctions.put(bidderId, newAuction);
-		}
-
-		public void sendPrice(int currentPrice, int increment, String winner) {
-			Logger.getLogger("han").info(
-					String.format("AuctionBucket.sendPrice(%d,%d,%s)",
-							currentPrice, increment, winner));
-			for (Auction auction : auctions.values()) {
-				auction.currentPrice(currentPrice, increment, winner);
-			}
-		}
-
-		public void sendClose() {
-			for (Auction auction : auctions.values()) {
-				auction.auctionClosed();
-			}
-		}
-	}
-
-	AuctionBucket auctionList = new AuctionBucket();
+	AuctionList auctionList = new AuctionList();
 
 	private String winner = "Broker";
 	private int currentPrice = 1000;
