@@ -10,7 +10,7 @@ import auctionhouse.Defect;
 
 public class BidderTableModel extends AbstractTableModel {
 
-	private static final int NUM_COLUMNS = 3;
+	private static final int NUM_COLUMNS = 4;
 	private static final long serialVersionUID = 5568967747069560297L;
 
 	private List<BidderSnapshot> bidders = new ArrayList<BidderSnapshot>();

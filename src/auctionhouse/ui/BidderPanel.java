@@ -20,22 +20,22 @@ public class BidderPanel extends JPanel {
 	private JLabel detailLabel = new JLabel();
 
 	private BidderPanel() {
-		setPreferredSize(new Dimension(250, 80));
+		setPreferredSize(new Dimension(180, 80));
 	}
 
 	public BidderPanel(BidderSnapshot value) {
 		super();
-		idLabel.setBounds(92, 10, 146, 15);
+		idLabel.setBounds(92, 10, 76, 15);
 		idLabel.setText(value.bidderId);
 		detailLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 		detailLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		detailLabel.setBounds(92, 35, 146, 19);
+		detailLabel.setBounds(92, 35, 76, 19);
 		detailLabel.setText(value.status);
 		
 		JLabel imageLabel = new JLabel(Avatar.getIcon(value.bidderId));
 		imageLabel.setVerticalAlignment(SwingConstants.TOP);
 		imageLabel.setBounds(0, 0, 80, 80);
-		setPreferredSize(new Dimension(250, 80));
+		setPreferredSize(new Dimension(180, 80));
 		setLayout(null);
 		add(imageLabel);
 		add(idLabel);
