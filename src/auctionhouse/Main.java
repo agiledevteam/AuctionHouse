@@ -45,17 +45,12 @@ public class Main implements UserActionListener {
 	@Override
 	public void startAuction(String serverAddress, int port, String itemId,
 			String password, int startPrice, int increment) {
-
 		XMPPAuctionHouse auctionHouse = new XMPPAuctionHouse(serverAddress,
 				itemId, password);
-		this.disconnectWhenUICloses(auctionHouse);
+		disconnectWhenUICloses(auctionHouse);
 
 		broker.setStartPrice(startPrice, increment);
 		broker.startAuction(auctionHouse);
-	}
-
-	public static String idFrom(String jid) {
-		return jid.split("@")[0];
 	}
 
 	@Override

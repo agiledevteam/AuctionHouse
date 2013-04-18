@@ -16,6 +16,7 @@ public class XMPPAuctionHouse implements AuctionHouse {
 	private String itemId;
 	private String password;
 	private XMPPConnection connection;
+	private AuctionCommandTranslator auctionCommandTranslator;
 
 	public XMPPAuctionHouse(String host, String itemId, String password) {
 		this.host = host;
@@ -26,22 +27,26 @@ public class XMPPAuctionHouse implements AuctionHouse {
 	@Override
 	public void start(final AuctionCommandHandler broker)
 			throws AuctionStartError {
-		ConnectionConfiguration config = new ConnectionConfiguration(host, 5222);
-		connection = new XMPPConnection(config);
-		try {
-			connection.connect();
-			connection.login(itemId, password);
-		} catch (XMPPException e) {
-			throw new AuctionStartError(e);
-		}
+		auctionCommandTranslator = new AuctionCommandTranslator(broker);
+		connection = connect();
 		connection.getChatManager().addChatListener(new ChatManagerListener() {
 			@Override
 			public void chatCreated(Chat chat, boolean locallyCreated) {
-				XMPPAuction auction = new XMPPAuction(chat);
-				chat.addMessageListener(new AuctionCommandTranslator(broker,
-						auction));
+				chat.addMessageListener(auctionCommandTranslator);
 			}
 		});
+	}
+
+	private XMPPConnection connect() throws AuctionStartError {
+		ConnectionConfiguration config = new ConnectionConfiguration(host, 5222);
+		XMPPConnection connection = new XMPPConnection(config);
+		try {
+			connection.connect();
+			connection.login(itemId, password);
+			return connection;
+		} catch (XMPPException e) {
+			throw new AuctionStartError(e);
+		}
 	}
 
 	@Override

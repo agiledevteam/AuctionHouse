@@ -6,17 +6,14 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
 
-import auctionhouse.Auction;
 import auctionhouse.AuctionCommandHandler;
 
 public class AuctionCommandTranslator implements MessageListener {
 
 	private AuctionCommandHandler handler;
-	private Auction auction;
 
-	public AuctionCommandTranslator(AuctionCommandHandler handler, Auction auction) {
+	public AuctionCommandTranslator(AuctionCommandHandler handler) {
 		this.handler = handler;
-		this.auction = auction;
 	}
 
 	@Override
@@ -25,7 +22,7 @@ public class AuctionCommandTranslator implements MessageListener {
 		String commandType = event.get("Command");
 
 		if ("JOIN".equals(commandType)) {
-			handler.onJoin(bidder(chat), auction);
+			handler.onJoin(bidder(chat), new XMPPAuction(chat));
 		} else if ("BID".equals(commandType)) {
 			handler.onBid(bidder(chat), Integer.parseInt(event.get("Price")));
 		}
