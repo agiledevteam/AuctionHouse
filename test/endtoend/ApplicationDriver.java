@@ -88,23 +88,25 @@ public class ApplicationDriver extends JFrameDriver {
 				.hasText(equalTo(id));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void clickAddFake() {
 		new JButtonDriver(this, JButton.class, named(MainWindow.ADD_BUTTON))
 				.click();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setIncrement(int increment) {
-		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
-				named(MainWindow.INCREMENT_EDIT));
+		JTextFieldDriver textField = new JTextFieldDriver(this,
+				JTextField.class, named(MainWindow.INCREMENT_EDIT));
 		textField.focusWithMouse();
-		textField.replaceAllText(String
-				.valueOf(increment));
+		textField.replaceAllText(String.valueOf(increment));
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setHost(String host) {
-		JTextFieldDriver textField = new JTextFieldDriver(this, JTextField.class,
-				named(MainWindow.HOST_EDIT));
+		JTextFieldDriver textField = new JTextFieldDriver(this,
+				JTextField.class, named(MainWindow.HOST_EDIT));
 		textField.focusWithMouse();
-		textField.replaceAllText(host);	
+		textField.replaceAllText(host);
 	}
 }

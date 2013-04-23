@@ -7,7 +7,6 @@ import org.junit.Test;
 import auctionhouse.Auction;
 import auctionhouse.AuctionBroker;
 import auctionhouse.AuctionHouse;
-import auctionhouse.AuctionStartError;
 import auctionhouse.BidderSnapshot;
 import auctionhouse.BrokerListener;
 
@@ -35,7 +34,7 @@ public class AuctionBrokerTest {
 		final int winningPrice = 5000;
 		context.checking(new Expectations() {
 			{
-				atLeast(1).of(listener).setStatus("Winner", "bidder-1",
+				atLeast(1).of(listener).statusChanged("Winner", "bidder-1",
 						winningPrice);
 				allowing(listener).bidderChanged(
 						with(any(BidderSnapshot.class)));
@@ -49,7 +48,7 @@ public class AuctionBrokerTest {
 	}
 
 	@Test
-	public void firstJoinIgnoredWhenSecondJoinReceived() {
+	public void shouldWorkWithLatelyJoinedBidder() {
 		final Auction auction1 = context.mock(Auction.class, "bidder-1");
 		final Auction auction2 = context.mock(Auction.class, "bidder-2");
 

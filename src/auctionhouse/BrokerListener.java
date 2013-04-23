@@ -1,8 +1,6 @@
 package auctionhouse;
 
 public interface BrokerListener {
-
-	void setStatus(String statusText, String winner, int price);
-	void bidderAdded(BidderSnapshot bidder);
+	void statusChanged(String statusText, String winner, int price);
 	void bidderChanged(BidderSnapshot bidderSnapshot);
 }

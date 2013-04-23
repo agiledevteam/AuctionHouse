@@ -24,15 +24,15 @@ public class AuctionBroker implements AuctionCommandHandler {
 	public void sendClose() {
 		auctionList.sendClose();
 		isClosed = true;
-		listener.setStatus("Closed", winner, currentPrice);
+		listener.statusChanged("Closed", winner, currentPrice);
 	}
 
 	@Override
 	public void onJoin(String bidderId, Auction auction) {
 		auctionList.add(bidderId, auction);
 		auction.currentPrice(currentPrice, increment, winner);
-		listener.setStatus("Joined", winner, currentPrice);
-		listener.bidderAdded(new BidderSnapshot(bidderId, "Joined"));
+		listener.statusChanged("Joined", winner, currentPrice);
+		listener.bidderChanged(new BidderSnapshot(bidderId, "Joined"));
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class AuctionBroker implements AuctionCommandHandler {
 			this.winner = bidderId;
 
 			auctionList.sendPrice(currentPrice, increment, winner);
-			listener.setStatus("Winner", winner, price);
+			listener.statusChanged("Winner", winner, price);
 		}
 		listener.bidderChanged(new BidderSnapshot(bidderId, Integer
 				.toString(price)));
@@ -57,9 +57,9 @@ public class AuctionBroker implements AuctionCommandHandler {
 	public void startAuction(AuctionHouse auctionHouse) {
 		try {
 			auctionHouse.start(this);
-			listener.setStatus("Started", "", 0);
+			listener.statusChanged("Started", "", 0);
 		} catch (AuctionStartError e) {
-			listener.setStatus("Server not ready", "", 0);
+			listener.statusChanged("Server not ready", "", 0);
 		}
 	}
 }

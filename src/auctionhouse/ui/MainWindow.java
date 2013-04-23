@@ -214,21 +214,11 @@ public class MainWindow extends JFrame implements BrokerListener {
 	}
 
 	@Override
-	public void setStatus(String status, String winner, int price) {
+	public void statusChanged(String status, String winner, int price) {
 		winnerPictureLabel.setIcon(Avatar.getIconLarge(winner));
 		statusLabel.setText(status);
 		winnerLabel.setText(winner);
 		priceLabel.setText(String.valueOf(price));
-	}
-
-	@Override
-	public void bidderAdded(final BidderSnapshot bidderSnapshot) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				bidders.addBidder(bidderSnapshot);
-			}
-		});
 	}
 
 	@Override

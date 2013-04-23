@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import auctionhouse.BidderSnapshot;
-import auctionhouse.Defect;
 
 public class BidderTableModel extends AbstractTableModel {
 
@@ -36,14 +35,13 @@ public class BidderTableModel extends AbstractTableModel {
 		}
 	}
 
-	public void addBidder(BidderSnapshot bidderSnapshot) {
-		bidders.add(bidderSnapshot);
-		fireTableDataChanged();
-	}
-
 	public void setBidder(BidderSnapshot bidderSnapshot) {
 		int index = findBidder(bidderSnapshot.bidderId);
-		bidders.set(index, bidderSnapshot);
+		if (index == -1) {
+			bidders.add(bidderSnapshot);
+		} else {
+			bidders.set(index, bidderSnapshot);
+		}
 		fireTableDataChanged();
 	}
 
@@ -53,7 +51,7 @@ public class BidderTableModel extends AbstractTableModel {
 				return i;
 			}
 		}
-		throw new Defect("bidder not found");
+		return -1;
 	}
 
 }
